@@ -1,0 +1,259 @@
+<html >
+<head>
+<link rel=themeData href="Report_Types_files/themedata.thmx">
+<link rel=colorSchemeMapping href="Report_Types_files/colorschememapping.xml">
+</head>
+<body>
+<div>
+<h2><b>Report Types</b></h2>
+<h3><b>OEE
+(Overall Equipment Effectiveness)</b></h3>
+<br />Overall
+equipment effectiveness quantifies how well a manufacturing unit performs
+relative to its designed capacity, during the periods when it is scheduled to
+run. The formula to calculate OEE is
+<br /> 
+<br />
+<table>
+          <tr>
+              <td rowspan="2">OEE =</td> <td><u>Good devices</u></td><td>x</td> <td><u>Devices Tested</u></td><td>x</td><td><u>Test time + Index time (Test)</u></td><td>+</td><td><u>Good devices</u></td><td>x</td> <td><u>Devices Tested</u></td><td>x</td><td><u>Test time + Index time (Retest)</u></td>
+          </tr>
+          <tr>
+            <td>Devices tested</td><td>&nbsp;</td><td>Sites available</td><td>&nbsp;</td><td align="center">Total time</td><td>&nbsp;</td><td>Devices tested</td><td>&nbsp;</td><td>Sites available</td><td>&nbsp;</td><td align="center">Total time</td>
+          </tr>
+</table> 
+<br /> 
+<br />            
+<br /><b>Grouping
+Options: </b>All, Equipment
+Type, Test Head, Date, Crew, Crew and Test Head, Test Program, Device and
+Temperature.<b> </b>
+<br /><b> </b>
+<h3><b>UOEE
+(Uncompromising Overall Equipment Effectiveness)</b></h3>
+<br />Effective
+Utilization, also known as Uncompromising OEE. Is a simplified version of OEE.
+The product of Availability Efficiency and Operational  Efficiency. This metric comprehends tool
+utilization for all products (good units, bad units, redos, and retests).  UOEE focuses on Capital Utilization.
+<br />     
+<br />      
+ <table>
+     <tr> <td rowspan="2">UOEE =</td> <td><u>Test time + Index time  (State = Productive)</u></td> </tr>
+     <tr> <td align="center">Total time</td> </tr>
+ </table>    
+<br /> 
+<br /><b>          Grouping Options: </b>All, Equipment Type, Test Head,
+Date, Crew, Crew and Test Head, Test Program, Device and Temperature.
+<br /> 
+<h3><b>Utilization
+E10</b></h3>
+<br />Utilization
+of the Equipment using the states defined in SEMI E10 Standard for definition
+and measurement of equipment reliability, availability and maintainability 
+<br />                The states are
+<ul>
+ <li>Productive</li>
+ <li>Standby</li>
+ <li>Engineering</li>
+ <li>Scheduled Downtime</li>
+ <li>Unscheduled Downtime</li>
+ <li>Non Scheduled</li>
+</ul>
+<br />
+<img width=540 height=473 src="Report_Types_files/image001.png">
+<br /> 
+<br /><b>                  Grouping Options: </b>All, Equipment Type, Test Head, Date, Crew,
+Crew and Test Head, Test Program, Device, Product Line, and Temperature.
+<br /> 
+<br /> 
+<h3><b>Utilization
+all states</b></h3>
+<br />Utilization
+of the equipment using subsstates. Also known as waterfall report. These
+substates are sent in the SUBSTATE context variable in EPR++ events. The
+formulas used for this report are listed below:
+<br /> 
+<table>
+          <tr>
+              <td rowspan="2">OEE =</td> <td><u>Good devices</u></td><td>x</td> <td><u>Devices Tested</u></td><td>x</td><td><u>Test time + Index time (Test)</u></td><td>+</td><td><u>Good devices</u></td><td>x</td> <td><u>Devices Tested</u></td><td>x</td><td><u>Test time + Index time (Retest)</u></td>
+          </tr>
+          <tr>
+            <td>Devices tested</td><td>&nbsp;</td><td>Sites available</td><td>&nbsp;</td><td align="center">Total time</td><td>&nbsp;</td><td>Devices tested</td><td>&nbsp;</td><td>Sites available</td><td>&nbsp;</td><td align="center">Total time</td>
+          </tr>
+</table> 
+<br />            
+<br />
+<table>
+<tr><td rowspan="2">First Pass Site Performance Loss =</td>  <td><u>Sites available – Devices tested  </u></td> <td>x</td>     <td><u>Good devices</u></td> <td>x</td>      <td><u>Test time + Index time (Substate =Test)       </u></td> </tr>
+<tr>                                                            <td align="center">Sites available</td>                           <td>&nbsp;</td><td>Devices tested</td>      <td>&nbsp;</td> <td align="center">Total time</td></tr>
+</table>
+<br />
+<br />
+
+<table>
+<tr><td rowspan="2">First Pass Yield Loss =</td>  <td><u>Devices tested - Good devices</u></td> <td>x</td>     <td><u>Test time + Index time (Substate = Test) </u></td></tr>
+<tr>                                              <td align="center">Devices tested </td>       <td>&nbsp;</td><td align="center">Total time</td></tr>
+</table>
+<br />
+<br />
+
+<table>
+<tr><td rowspan="2">Retest Gain =</td> <td><u> Good devices </u></td> <td>x</td>     <td><u>Devices Tested</u></td>  <td>x</td>      <td> <u> Test time + Index time   (Substate = Retest)</u></td>  </tr>
+<tr>                                   <td>Devices tested </td>       <td>&nbsp;</td><td>Sites available</td> <td>&nbsp;</td> <td align="center">Total time</td></tr>
+</table>
+
+<br /> 
+<br />           <b>Grouping Options:</b> All,
+Equipment Type, Test Head, Date, Crew, and Temperature.
+<br /> 
+<h3><b>Losses</b></h3>
+<br />           Losses report according to the
+groups defined in the states window
+<br /><b>           Grouping Options: </b>All, Equipment Type, Test Head, Date, Crew,
+Crew and Test Head, Test Program, Device and Temperature.
+<br /> 
+<h3><b>Losses
+Breakdown</b></h3>
+<br />           Losses report according to the
+substates and groups defined in the States window
+<br /><b>           Grouping Options: </b>All, Equipment Type, Test Head, Date, Crew
+and Temperature.
+<br /> 
+<h3><b>Setup Type</b></h3>
+<br />           Reports the Source of the set up
+settings for the equipment, e.g. Manual, Genesis, etc. 
+<br /><b>           Grouping Options: </b>All, Equipment Type, Test Head, Date, Crew,
+Crew and Test Head, Test Program, Device and Temperature.
+<br /> 
+<h3><b>Devices
+processed</b></h3>
+<br />           Total of Devices processed by the
+equipments selected in the period specified
+<br /><b>           Grouping Options: </b>All, Equipment Type, Test Head, Date, Crew,
+Lot, Test Program, Device, Temperature and Device, Temperature, and Product
+Line.
+<br /> 
+<h3><b>Yield</b></h3>
+<br />
+<table>
+<tr><td rowspan="2">Yield  =</td> <td><u>Good Devices</u></td> </tr>
+<tr>                              <td>Devices Tested</td> </tr>
+</table> 
+<br /> 
+<br /><b>            Grouping Options: </b>All, Equipment Type, Test Head, Date, Crew,
+Lot, Test Program, Device, Temperature and Device, Temperature, and Product
+Line.
+<br /> 
+<h3><b>Site Yield</b></h3>
+<br />
+<table>
+<tr><td rowspan="2">Site Yield =</td> <td><u>Sites HB1</u></td> </tr>
+<tr>                              <td>Sites HB$</td> </tr>
+</table> 
+           
+<br /><b>           Grouping Options: </b>All, Equipment Type, Test Head, Date, Crew,
+Lot, Test Program, Device, Temperature and Device and Temperature.
+<br /> 
+<h3><b>Site
+Performance</b></h3>
+<br />       
+<table>
+<tr><td rowspan="2">Site  Performance =</td> <td align="center"><u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Devices Tested&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u></td> </tr>
+<tr>                                         <td>Sites Available  x Insertions</td> </tr>
+</table> 
+<br /> 
+<br /><b>            Grouping Options: </b>All, Equipment Type, Test Head, Date, Crew,
+Lot, Test Program, Device, Temperature and Device and Temperature.
+<br /> 
+<h3><b>Total test
+time</b></h3>
+<br />            The total Test time for the
+Equipment selected in the period specified
+<br />            <b>Grouping Options: </b>All,
+Equipment Type, Test Head, Date, Crew, Lot, Test Program, Device, Temperature
+and Device, Temperature, and Product Line.
+<br /> 
+<br /> 
+<br />
+<b>
+
+      Avg, test time</b>
+<table>
+<tr><td rowspan="2">Avg. test time =</td> <td align="center"><u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Test Time&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u></td> </tr>
+<tr>                              <td>Devices Tested</td> </tr>
+</table> 
+<br /><b>             Grouping Options: </b>All, Equipment Type, Test Head, Date, Crew,
+Lot, Test Program, Device, Temperature and Device, Temperature, and Product
+Line.
+<br /> 
+<h3><b>Avg. index test time</b></h3>
+<br />
+<table>
+<tr><td rowspan="2">Avg. index test time =</td> <td align="center"><u>&nbsp;&nbsp;&nbsp;Index Time&nbsp;&nbsp;&nbsp;</u></td> </tr>
+<tr>                              <td>Devices Tested</td> </tr>
+</table> 
+<br /><b>             Grouping Options: </b>All, Equipment Type, Test Head, Date, Crew,
+Lot, Test Program, Device, Temperature and Device, Temperature, and Product
+Line.
+<br /> 
+<h3><b>Yield Loss</b></h3>
+<table>
+<tr><td rowspan="2">Yield Loss =</td> <td align="center"><u>&nbsp;&nbsp;(Devices Tested  - Good Devices)&nbsp;&nbsp;</u></td> <td>x</td> <td><u>Test time + Index time</u></td> </tr>
+<tr>                                  <td align="center">Devices Tested</td> <td>&nbsp;</td> <td align="center">Total Time</td> </tr>
+</table> 
+<br /><b>               Grouping Options: </b>All, Equipment Type, Test Head, Date, Crew,
+Lot, Test Program, Device, Temperature and Device and Temperature.
+<h3><b>Tester Performance Variation</b></h3>
+<br />          Text report that includes the
+following metrics.
+<ul>
+<li>Avg. Test Time</li>
+<li>Avg. Index Test time</li>
+<li>UOEE</li>
+<li>Yield</li>
+<li>Site Yield by individual site</li>
+</ul>
+<br /><b>           Grouping Options: </b>All and Test Head.
+<br /> 
+<h3><b>Tester Utilization</b></h3>
+Text report that includes the
+following metrics.
+<ul>
+<li>Avg. Test Time</li>
+<li>Avg. Index Test time</li>
+<li>UOEE</li>
+<li>Site Performance</li>
+<li>Yield</li>
+</ul>
+<br /><b>           Grouping Options: </b>Test Head and Lot.
+<br /> 
+<h3><b>Jam Alarms</b></h3>
+<br />          Summary of the jam alarms received by
+the equipment 
+<br /><b>          Grouping Options: </b>Test Head.
+<br /> 
+<h3><b> Data</b></h3>
+<br />           It is an extract of the summary
+files for the test head and period selected
+<br /><b>          Grouping Options: </b>Test Head.
+<br /> 
+<h3><b> State Transitions </b></h3>
+<br />            State transitions for the test head
+and the dates selected, dates must be raw.
+<br /><b>            Grouping Options: </b>Test Head.
+<br /> 
+<h3><b> Substate Transitions</b></h3>
+<br />            Substate transitions for the test
+head and the dates selected, dates must be raw.
+<br /><b>            Grouping Options: </b>Test Head.
+<br />
+<h3><b> PNP Performance</b></h3>
+includes the records where PNP_SITES_AVAILABLE is defined<br />
+When this report is scheduled to be e-mailed the  e-mail includes a summary with the average PNP as calculated by the following formula :<br /> 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;averagePNP =  (pnp count / location count)  / total Handler * 100
+<br />
+<b>Grouping Options:</b>Test Head.<br />
+<br /><br />
+</div>
+</body>
+</html>

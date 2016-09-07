@@ -1,0 +1,52 @@
+
+<!-- 
+	Modify the attributes dbalias, username and password to connect to your Oracle database.
+	dbalias must be "@<database IP>:<database port>:<database SID>"
+	Do not modify anything else
+-->
+<jdbc-connection-descriptor jcd-alias="default"
+	default-connection="true" platform="Oracle9i" jdbc-level="3.0"
+	driver="oracle.jdbc.driver.OracleDriver" batch-mode="false" protocol="jdbc"
+	subprotocol="oracle:thin"
+	dbalias="@(DESCRIPTION = (ADDRESS = (PROTOCOL = TCP)(HOST = liriver.ap.freescale.net)(PORT = 1533)) (CONNECT_DATA = (SERVER = DEDICATED) (SID = ttttest)))"
+	username="tttfinal" password="tttfinal">
+	<sequence-manager
+		className="org.apache.ojb.broker.util.sequence.SequenceManagerNextValImpl">
+		<attribute attribute-name="autoNaming" attribute-value="true" />
+	</sequence-manager>
+</jdbc-connection-descriptor>
+<!-- <jdbc-connection-descriptor jcd-alias="default" -->
+<!-- 	default-connection="true" platform="Oracle9i" jdbc-level="3.0" -->
+<!-- 	driver="oracle.jdbc.driver.OracleDriver" batch-mode="false" protocol="jdbc" -->
+<!-- 	subprotocol="oracle:thin" -->
+<!-- 	dbalias="@(DESCRIPTION = (ADDRESS = (PROTOCOL = TCP)(HOST = liriver.ap.freescale.net)(PORT = 1533)) (CONNECT_DATA = (SERVER = DEDICATED) (SID = ttttest)))" -->
+<!-- 	username="TTTFINAL" password="TTTFINAL"> -->
+<!-- 	<sequence-manager -->
+<!-- 		className="org.apache.ojb.broker.util.sequence.SequenceManagerNextValImpl"> -->
+<!-- 		<attribute attribute-name="autoNaming" attribute-value="true" /> -->
+<!-- 	</sequence-manager> -->
+<!-- </jdbc-connection-descriptor> -->
+
+<!-- <jdbc-connection-descriptor jcd-alias="default" -->
+<!-- 	default-connection="true" platform="Oracle9i" jdbc-level="3.0" -->
+<!-- 	driver="oracle.jdbc.driver.OracleDriver" batch-mode="false" protocol="jdbc" -->
+<!-- 	subprotocol="oracle:thin" -->
+<!-- 	dbalias="@(DESCRIPTION = (ADDRESS = (PROTOCOL = TCP)(HOST = liriver.ap.freescale.net)(PORT = 1533)) (CONNECT_DATA = (SERVER = DEDICATED) (SID = ttttest)))" -->
+<!-- 	username="tttfinal" password="tttfinal"> -->
+<!-- 	<sequence-manager -->
+<!-- 		className="org.apache.ojb.broker.util.sequence.SequenceManagerNextValImpl"> -->
+<!-- 		<attribute attribute-name="autoNaming" attribute-value="true" /> -->
+<!-- 	</sequence-manager> -->
+<!-- </jdbc-connection-descriptor> -->
+
+<!-- <jdbc-connection-descriptor jcd-alias="default" -->
+<!-- 	default-connection="true" platform="Oracle9i" jdbc-level="3.0" -->
+<!-- 	driver="oracle.jdbc.driver.OracleDriver" batch-mode="false" protocol="jdbc" -->
+<!-- 	subprotocol="oracle:thin" -->
+<!-- 	dbalias="@(DESCRIPTION = (ADDRESS = (PROTOCOL = TCP)(HOST = liriver.ap.freescale.net)(PORT = 1533)) (CONNECT_DATA = (SERVER = DEDICATED) (SID = ttttest)))" -->
+<!-- 	username="tttft" password="welcome123"> -->
+<!-- 	<sequence-manager -->
+<!-- 		className="org.apache.ojb.broker.util.sequence.SequenceManagerNextValImpl"> -->
+<!-- 		<attribute attribute-name="autoNaming" attribute-value="true" /> -->
+<!-- 	</sequence-manager> -->
+<!-- </jdbc-connection-descriptor> -->

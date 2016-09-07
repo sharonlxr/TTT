@@ -1,0 +1,8 @@
+header=LoadBoard {
+content.1=\t\tLoadBoard {
+content.2=\t\t\t\tId:$eIName
+content.3=\t\t\t\tType:$type
+content.4=\t\t\t\tDevice:$deviceGroup
+content.4.splitMultipleItems=true
+content.5=\t\t}
+footer=}				

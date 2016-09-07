@@ -1,0 +1,141 @@
+# Site name
+site=Development
+# Instance type
+instanceType=Production
+#Manufacturing Area Code
+area_code=
+#Manufacturing Plant Code
+plant_code=
+#Manufacturing stage
+stage=
+
+# Path to the directory where the State Stamper and Summary data will be stored
+dataDirectory=
+
+# Path to the directory where the attachment files will be stored
+attachmentDirectory=
+
+#directory for reports to be transfered (CVS reports automatically are published to this folder)
+transferDirectory=
+# Path to the directory where the reports will be stored
+reportsDirectory=
+
+# Port where State Stamper is listening for EPR++ messages 
+port=9001
+
+# Whether to log each EPR++ message or not
+logEvents=N
+
+# Interval in seconds after which a machine will transition to Standby if it was Productive and no message have been received during this interval
+idleInterval=300
+
+#Defines a filter for tester events with substates "Parts are Soaking" and "Alarm Recovery"
+#When the testers is in Productive state and substate is : Test, Retest, QC Test or EE Test and the next event has substate "Parts are Soaking" or "Alarm Recovery"
+# The tester will remain in the same state 
+#the value is the list of testers that the filter will be applied to, also the value "all" can be set to define the filter will be applied to all the testers 
+# To disable this filter let it blank 
+stateChangeTesterID=
+# Interval in seconds after which a record will be written to the Raw file
+writeInterval=900
+# If set to Y and an MES event puts a machine on Scheduled Down, Unscheduled Down or Non Scheduled, only another MES event can take it out of that state
+mesPrecedence=Y
+
+#Default Equipment Type to use when no Equipment Type selected 
+defaultEquipmentType=Tester
+
+# If set to Y EPR events received for durables will transition the durable without validating against the transition table 
+eprPrecedence=Y
+# Context variables to save and summarize. Comma separated list
+context=SUBSTATE,LOT_ID,DEVICE_ID,TEST_PROGRAM,TEMPERATURE,RETEST,RESCREEN,SITES_AVAILABLE,HANDLER_ID,LOADBOARD_ID,OPERATOR_ID,CREW,JAM_NUMBER,JAM_DESCRIPTION,CRITICAL_JAM,DEVICE_NAME,FLOW_ID,SC_VERSION,API_VERSION,SETUP_SOURCE,PRODUCT_LINE,SITE_DISABLED_DATE,SITE_DISABLED_RESPONSE_TIME,SITE_DISABLED_BIN_NUM,SITE_DISABLED_BIN_TYPE,SITE_DISABLED_FAIL_TYPE,SITE_DISABLED
+
+# Summing variables to save and summarize. Comma separated list
+summing=INSERTIONS,DEVICES_PROCESSED,CNT_GOOD,TEST_TIME,HND_INDEX_TIME,SITE0_HB1,SITE0_HB,SITE1_HB1,SITE1_HB,SITE2_HB1,SITE2_HB,SITE3_HB1,SITE3_HB,SITE4_HB1,SITE4_HB,SITE5_HB1,SITE5_HB,SITE6_HB1,SITE6_HB,SITE7_HB1,SITE7_HB,LOT_COUNT
+# Probe context variables to save and summarize. Comma separated list
+#context=SUBSTATE,LOT_ID,DEVICE_ID,REPROBE,PROBECARD_ID,PROBECARD_TYPE,COMMENTS,OPERATOR_ID,WAFER_ID,PASS,CREW
+performance=LOT_PROGRESS
+# Probe summing variables to save and summarize. Comma separated list
+#summing=TOUCH_INCREMENT,NUMBER_POLISH,WAFERS_PROCESSED,DEVICES_PROCESSED,CNT_GOOD,TEST_TIME,PROGRAM_LOAD_TIME,ALARM_TIME
+
+# Shift definitions. It is a list of shifts. Each shift contains: shift ID, start time (HH24:MI:SS format), end time (HH24:MI:SS format) and the days of the week when the shift runs. This is a string with either a Y (shift runs) or an N (shift does not run) for each day of the week starting with Sunday.
+# For example: shifts=A,06:00:00,18:00:00,YYYYYYY;B,18:00:00,06: 00:00,YYYYYYY
+shifts=1,06:00:00,18:00:00,YYYYYYY;2,18:00:00,06:00:00,YYYYYYY
+
+# Crew definitions. It is a list of shifts. Each shift contains: fiscal date (YYYY-MM-DD format), shift and a comma separated of crews working that shift from that fiscal date for an entire cycle.
+# For example: crews=2010-01-01,1,A,A,A,A,C,C,C,C,B,B,B,B;2010-01-01,2,C,C,B,B,B,B,A,A,A,A,C,C
+crews=2011-01-01,1,A,A,A,A,C,C,C,C,B,B,B,B;2010-01-01,2,C,C,B,B,B,B,A,A,A,A,C,C
+
+# Maximum number of days to keep for raw data. At least 1
+maxRaw=30 
+#number of months to keep summarized data. At least 1, default 3
+maxSummary=12
+# Directory where EPR++ files for Diamond will be generated
+diamondDirectory=
+
+# Promis connection information. Only needed for probe
+promisPrimaryHost=
+promisPrimaryPort=
+promisSecondaryHost=
+promisSecondaryPort=
+promisUser=
+promisPassword=
+
+# PIC connection information: host, port and DMH box
+picHost=
+picPort=
+dmhBox=
+
+# External DB Server (Oracle) to update attributes
+OracleExternalDBServer=
+OracleExternalPort=
+OracleExternalSID=
+OracleExternalUser=
+OracleExternalPassword=
+
+detailedStatus=STATE,DEVICE_ID,RETEST,LAST_HR_OEE,LOT_PROGRESS,SUBSTATE,FLOW_ID,HANDLER_ID,CURRENT_SITE_PERF,24_HR_SITE_PERF,LOT_ID,TEMPERATURE,LOADBOARD_ID,LAST_HR_YIELD,24_HR_YIELD
+detailedStatusContextBar=STATE,LOT_ID,DEVICE_ID,FLOW_ID,TEMPERATURE,RETEST,HANDLER_ID,LOADBOARD_ID
+detailedStatusSummingsBar=Site Perf,Yield,Yield Site 0,Yield Site 1,Yield Site 2,Yield Site 3,Yield Site 4,Yield Site 5,Yield Site 6,Yield Site 7,Yield Site 8,Yield Site 9,Yield Site 10,Yield Site 11,Yield Site 12,Yield Site 13,Yield Site 14,Yield Site 15       
+
+#Define a filter for TEST_PROGRAM|FLOW_ID|SITES_AVAILABLE
+#When a message with sub-state Test or Retest is received that has the TEST_PROGRAM and FLOW_ID configured the event stored will have the SITES_AVAILABLE configured instead of the  SITES_AVAILABLE from the EPR
+# The format of the filter is TEST_PROGRAM|FLOW_ID|SITES_AVAILABLE separated by the pipe character |, for instance:
+# Leopard3_N89D|FCA|7  where 
+# Leopard3_N89D is the test program, FCA the FLOW_ID, and 7 the SITES_AVAILABLE. 
+#Test,Retest EPRs with TEST_PROGRAM =  Leopard3_N89D and FLOW_ID = FCA will be stored with SITES_AVAILABLE = 7 instead of the the SITES_AVAILABLE from the EPR
+# if there are multiple filters they are separated by commas (Leopard3_N89D|FCA|7,Leopard3_N89D|FHA|6)
+# to disable this filter let it blank.
+sitesFilterByTestProgramFlowId=
+
+#it defines what time should be used for the events: server: the server time when the event is received, client: the time contained in the event. By default it is server. 
+eventTime=server
+
+#it defines client to decide if need acknowledgement from socket TTT or not. Value is boolean type true or false (default). 
+clientAcknowledgment=false
+
+#Genesis Configuration
+genesisHost=
+genesisPort=
+genesisSecureID=
+genesisTxnUserID=
+genesisEmailNotification=
+genesis.addMachine.instance=MatlMgr
+genesis.updateMachineAttr.instance=MatlMgr
+genesis.machineStateChange.instance=M3Mgr
+genesis.getMachineModel.instance=M3Mgr
+genesis.getLoadboardConfigurationMap.instance=M3Mgr
+genesis.getMachineAttributes.instance=M3Mgr
+genesis.setupMachineModel.instance=MatlMgr
+genesis.deleteMachineModel.instance=MatlMgr
+genesis.getMachineModelAttributes.instance=MatlMgr
+genesis.getMachTypeModelCombinations.instance=MatlMgr
+genesis.addMachTypeModelComb.instance=MatlMgr
+genesis.deleteMachTypeModelComb.instance=MatlMgr
+
+#SOR Fiscal Calendar Settings
+fiscalCalendarSORHost=fspeds.am.freescale.net
+fiscalCalendarSORPort=1521
+fiscalCalendarSORSID=fspeds
+fiscalCalendarSORUser=edsread
+fiscalCalendarSORPassword=edsread
+
+#to enable/ disable scheduler interval 15mins and 30mins. Default Value false(disabled), true(enabled).
+schedulerMinsInterval=false

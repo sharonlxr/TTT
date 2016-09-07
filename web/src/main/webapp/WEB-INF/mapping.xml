@@ -1,0 +1,34 @@
+<mapping>
+	<class name="com.freescale.sc.model.entity.event.EquipmentEvent">
+		<map-to xml="EquipmentEvent"/>
+		<field name="equipment" type="com.freescale.sc.model.entity.event.Equipment" direct="true"><bind-xml name="Equipment" node="element"/></field>
+		<field name="event" type="com.freescale.sc.model.entity.event.Event" direct="true"><bind-xml name="Event" node="element"/></field>
+		<field name="startTime" direct="true"><bind-xml name="StartTime" node="attribute" location="State"/></field>
+		<field name="contexts" type="com.freescale.sc.model.entity.event.Context" direct="true" collection="vector"><bind-xml name="Context" node="element"/></field>
+		<field name="summings" type="com.freescale.sc.model.entity.event.Summing" direct="true" collection="vector"><bind-xml name="Summing" node="element"/></field>
+		<field name="state" direct="true"><bind-xml name="ID" node="attribute" location="State"/></field>
+	</class>
+	<class name="com.freescale.sc.model.entity.event.Equipment">
+		<field name="type" direct="true"><bind-xml name="Type" node="attribute"/></field>
+		<field name="location" direct="true"><bind-xml name="Location" node="attribute"/></field>
+		<field name="id" direct="true"><bind-xml name="ID" node="attribute"/></field>
+		<field name="isPrimary" direct="true"><bind-xml name="IsPrimary" node="attribute"/></field>
+		<field name="dependentTools" type="com.freescale.sc.model.entity.event.Equipment" direct="true" collection="vector"><bind-xml name="DependentTool" node="element"/></field>
+	</class>
+	<class name="com.freescale.sc.model.entity.event.Event">
+		<field name="id" direct="true"><bind-xml name="ID" node="attribute"/></field>
+		<field name="time" direct="true"><bind-xml name="Time" node="attribute"/></field>
+	</class>
+	<class name="com.freescale.sc.model.entity.event.Context">
+		<field name="name" direct="true"><bind-xml name="Name" node="attribute"/></field>
+		<field name="value" direct="true"><bind-xml name="Value" node="attribute"/></field>
+		<field name="units" direct="true"><bind-xml name="Units" node="attribute"/></field>
+	</class>
+	<class name="com.freescale.sc.model.entity.event.Summing">
+		<field name="name" direct="true"><bind-xml name="Name" node="attribute"/></field>
+		<field name="value" direct="true"><bind-xml name="Value" node="attribute"/></field>
+		<field name="units" direct="true"><bind-xml name="Units" node="attribute"/></field>
+		<field name="count" direct="true"><bind-xml name="Count" node="attribute"/></field>
+	</class>
+	
+</mapping>

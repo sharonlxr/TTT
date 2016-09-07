@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jnlp spec="1.0+" codebase="$$codebase" href="$$name">
+<information>
+	<title>Tool Time Tracker 4.6</title>
+ 	<vendor>Freescale</vendor>
+ 	<description kind="short">TTT 4.6</description>
+ 	<icon kind="splash" href="images/Splash.png"/>
+ 	<icon kind="shortcut" href="images/icon.gif"/>
+	<shortcut online="true">
+		<desktop/>
+	</shortcut>
+</information>
+<security>
+	<all-permissions/>
+</security>
+<resources>
+	<j2se version="1.5+"/>
+	<jar href="client-4.6.jar"/>
+	<jar href="clientUtil-1.8.jar" download="lazy"/>
+	<jar href="jxl-2.6.jar" download="lazy"/>
+	<jar href="commons-lang-2.5.jar" download="lazy"/>
+	<jar href="ojb-1.0.4.jar" download="lazy"/>
+	<jar href="commons-fileupload-1.2.2.jar" download="lazy"/>
+	<jar href="commons-io-2.4.jar" download="lazy"/>
+</resources>
+<application-desc main-class="com.freescale.stateStamper.view.StateStamperFrame"/>
+</jnlp>
+
+ 

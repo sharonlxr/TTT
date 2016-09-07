@@ -1,0 +1,15 @@
+header=ProbeCard_Repos {
+content.1=\t\tProbeCard {
+content.2=\t\t\t\tId:$eIName
+content.3=\t\t\t\tType:$PC_LAYOUT_ID
+content.3.detail.associateBy=workstation
+content.3.detail.1=\t\t\t\tSite {
+content.3.detail.2=\t\t\t\t\t\tNumber:$NUMBER
+content.3.detail.3=\t\t\t\t\t\tRow:$ROW
+content.3.detail.4=\t\t\t\t\t\tColumn:$COLUMN
+content.3.detail.5=\t\t\t\t\t\tUsed:$USED
+content.3.detail.6=\t\t\t\t}
+content.4=\t\t\t\tDevice:$ALLOWED_DEVICE
+content.4.splitMultipleItems=true
+content.5=\t\t}
+footer=}				

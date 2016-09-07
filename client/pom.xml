@@ -1,0 +1,416 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.freescale.pta</groupId>
+    <artifactId>TTT</artifactId>
+    <version>4.6</version>
+  </parent>
+  <artifactId>client</artifactId>
+  <packaging>jar</packaging>
+
+  <name>client</name>
+  <url>http://maven.apache.org</url>
+  <properties>
+    <keystore.file>src/main/resources/cimapps.jks</keystore.file>
+    <keystore.alias>fslcim</keystore.alias>
+    <keystore.storepass>12fslcim21</keystore.storepass>
+    <keystore.tsa>http://timestamp.globalsign.com/scripts/timestamp.dll</keystore.tsa>
+  </properties>
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>3.8.1</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+    	<groupId>javax.servlet</groupId>
+    	<artifactId>servlet-api</artifactId>
+    	<version>2.5</version>
+    	<type>jar</type>
+    	<scope>provided</scope>
+    </dependency>
+    <dependency>
+    	<groupId>org.codehaus.castor</groupId>
+    	<artifactId>castor</artifactId>
+    	<version>1.1.2.1</version>
+    	<type>jar</type>
+    	<scope>compile</scope>
+    </dependency>
+    <dependency>
+    	<groupId>net.sourceforge.jexcelapi</groupId>
+    	<artifactId>jxl</artifactId>
+    	<version>2.6</version>
+    </dependency>
+    <dependency>
+    	<groupId>com.oracle</groupId>
+    	<artifactId>ojdbc14</artifactId>
+    	<version>10.2.0.2.0</version>
+    	<scope>compile</scope>
+    </dependency>
+    <dependency>
+    	<groupId>javax</groupId>
+    	<artifactId>jnlp</artifactId>
+    	<version>1.0</version>
+    	<scope>compile</scope>
+    </dependency>
+    <dependency>
+    	<groupId>javax</groupId>
+    	<artifactId>jnlp-servlet</artifactId>
+    	<version>1.0</version>
+    	<scope>compile</scope>
+    </dependency>
+    <dependency>
+    	<groupId>com.freescale</groupId>
+    	<artifactId>serverUtil</artifactId>
+    	<version>1.1.2</version>
+    </dependency>
+    <dependency>
+    	<groupId>com.freescale</groupId>
+    	<artifactId>clientUtil</artifactId>
+    	<version>1.8</version>
+    </dependency>
+    <dependency>
+    	<groupId>com.freescale</groupId>
+    	<artifactId>pic</artifactId>
+    	<version>1.0</version>
+    	<scope>compile</scope>
+    </dependency>
+    <dependency>
+    	<groupId>javax.activation</groupId>
+    	<artifactId>activation</artifactId>
+    	<version>1.0.2</version>
+    	<scope>compile</scope>
+    </dependency>
+        <dependency>
+    	<groupId>javax.mail</groupId>
+    	<artifactId>mail</artifactId>
+    	<version>1.4</version>
+    	<scope>compile</scope>
+    </dependency>
+  </dependencies>
+  <build>
+    <finalName>${project.artifactId}-${project.version}</finalName>
+    <plugins>
+<plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>2.3.1</version>
+        <configuration>
+	        <archive>
+	            <manifest>
+	              <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+	              <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+	              <mainClass>com.freescale.stateStamper.view.StateStamperFrame</mainClass>
+	            </manifest>
+	            <manifestEntries>
+                   <Permissions>all-permissions</Permissions>
+                   <Application-Name>Tool Time Tracker ${project.version}</Application-Name>
+                   <Codebase>*</Codebase>
+                   <Trusted-Only>true</Trusted-Only>
+  				</manifestEntries>
+	        </archive>
+        </configuration>
+
+<executions>
+          <execution>
+          <id>sign-TTT</id>
+            <goals>
+              <goal>sign</goal>
+            </goals>
+        <configuration>
+          <keystore>${keystore.file}</keystore>
+          <alias>${keystore.alias}</alias>
+          <storepass>${keystore.storepass}</storepass>
+          <verify>true</verify>
+          <tsa>${keystore.tsa}</tsa>
+        </configuration>
+          </execution>
+</executions>
+
+</plugin>
+ 
+ 
+ <plugin>
+        <artifactId>maven-resources-plugin</artifactId>
+        <version>2.4.3</version>
+        <executions>
+          <execution>
+            <id>copy-resources</id>
+           <phase>integration-test</phase>
+            <goals>
+              <goal>copy-resources</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>../web/src/main/webapp</outputDirectory>
+              <resources>          
+                <resource>
+                  <directory>target</directory>
+                 <includes>
+                 <include>${project.artifactId}-${project.version}.jar</include>
+                </includes>
+                </resource>
+
+                <resource>
+                  <directory>${settings.localRepository}/com/freescale/clientUtil/1.8</directory>
+                 <includes>
+                 <include>clientUtil-1.8.jar</include>
+                </includes>
+                </resource>
+
+                <resource>
+                  <directory>${settings.localRepository}/net/sourceforge/jexcelapi/jxl/2.6</directory>
+                 <includes>
+                 <include>jxl-2.6.jar</include>
+                </includes>
+                </resource>
+        
+                <resource>
+                  <directory>${settings.localRepository}/ojb/ojb/1.0.4</directory>
+                 <includes>
+                 <include>ojb-1.0.4.jar</include>
+                </includes>
+                </resource>
+                
+                <resource>
+                 <directory>${settings.localRepository}/commons-lang/commons-lang/2.5</directory>
+                 <includes>
+                  <include>commons-lang-2.5.jar</include>
+                 </includes>
+                </resource>
+
+                <resource>
+                 <directory>${settings.localRepository}/commons-fileupload/commons-fileupload/1.2.2</directory>
+                 <includes>
+                  <include>commons-fileupload-1.2.2.jar</include>
+                 </includes>
+                </resource>
+
+                <resource>
+                 <directory>${settings.localRepository}/commons-io/commons-io/2.4</directory>
+                 <includes>
+                  <include>commons-io-2.4.jar</include>
+                 </includes>
+                </resource>
+                
+              </resources>        
+
+                    
+            </configuration>            
+          </execution>
+        </executions>
+      </plugin>
+ 
+<plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jarsigner-plugin</artifactId>
+        <version>1.3</version>
+
+        <executions>
+          <execution>
+            <id>sign-clientUtil</id>
+            <phase>install</phase>
+            <goals>
+              <goal>sign</goal>
+            </goals>
+        <configuration>
+          <keystore>${keystore.file}</keystore>
+          <alias>${keystore.alias}</alias>
+          <storepass>${keystore.storepass}</storepass>
+          <tsa>${keystore.tsa}</tsa>
+          <archive>../web/src/main/webapp/clientUtil-1.8.jar</archive>
+        </configuration>
+          </execution>
+
+          <execution>
+            <id>sign-jxl</id>
+                              <phase>install</phase>
+            <goals>
+              <goal>sign</goal>
+            </goals>
+        <configuration>
+          <keystore>${keystore.file}</keystore>
+          <alias>${keystore.alias}</alias>
+          <storepass>${keystore.storepass}</storepass>
+          <tsa>${keystore.tsa}</tsa>
+          <verify>true</verify>
+          <archive>../web/src/main/webapp/jxl-2.6.jar</archive>
+        </configuration>
+          </execution>
+
+        <execution>
+            <id>sign-commons-lang</id>
+            <phase>install</phase>
+            <goals>
+              <goal>sign</goal>
+            </goals>
+        <configuration>
+          <keystore>${keystore.file}</keystore>
+          <alias>${keystore.alias}</alias>
+          <storepass>${keystore.storepass}</storepass>
+          <tsa>${keystore.tsa}</tsa>
+          <verify>true</verify>
+          <archive>../web/src/main/webapp/commons-lang-2.5.jar</archive>
+        </configuration>
+          </execution>
+          
+          <execution>
+          <id>sign-ojb</id>
+            <phase>install</phase>
+            <goals>
+              <goal>sign</goal>
+            </goals>
+        <configuration>
+          <keystore>${keystore.file}</keystore>
+          <alias>${keystore.alias}</alias>
+          <storepass>${keystore.storepass}</storepass>
+          <tsa>${keystore.tsa}</tsa>
+          <verify>true</verify>
+          <archive>../web/src/main/webapp/ojb-1.0.4.jar</archive>
+        </configuration>
+          </execution>
+
+          <execution>
+          <id>sign-commons-fileupload</id>
+            <phase>install</phase>
+            <goals>
+              <goal>sign</goal>
+            </goals>
+        <configuration>
+          <keystore>${keystore.file}</keystore>
+          <alias>${keystore.alias}</alias>
+          <storepass>${keystore.storepass}</storepass>
+          <tsa>${keystore.tsa}</tsa>
+          <verify>true</verify>
+          <archive>../web/src/main/webapp/commons-fileupload-1.2.2.jar</archive>
+        </configuration>
+          </execution>
+
+          <execution>
+          <id>sign-commons-io</id>
+            <phase>install</phase>
+            <goals>
+              <goal>sign</goal>
+            </goals>
+        <configuration>
+          <keystore>${keystore.file}</keystore>
+          <alias>${keystore.alias}</alias>
+          <storepass>${keystore.storepass}</storepass>
+          <tsa>${keystore.tsa}</tsa>
+          <verify>true</verify>
+          <archive>../web/src/main/webapp/commons-io-2.4.jar</archive>
+        </configuration>
+          </execution>
+         
+        </executions>
+
+      </plugin>
+
+   </plugins>
+</build>
+<reporting><plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>cobertura-maven-plugin</artifactId>
+                <version>2.3</version>
+            </plugin>
+
+   <!--         <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-report-plugin</artifactId>
+                <version>2.4.3</version>
+            </plugin> -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>javancss-maven-plugin</artifactId>
+                <version>2.0-beta-2</version>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>jdepend-maven-plugin</artifactId>
+                <version>2.0-beta-2</version>
+            </plugin>
+            <plugin>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>2.4</version>
+<!--                <configuration>
+                    <minmemory>128m</minmemory>
+                    <maxmemory>512</maxmemory>
+                    <doclet>gr.spinellis.umlgraph.doclet.UmlGraphDoc</doclet>
+                    <docletArtifact>
+                        <groupId>gr.spinellis</groupId>
+                        <artifactId>UmlGraph</artifactId>
+                        <version>4.4</version>
+                    </docletArtifact>
+                    <additionalparam>-inferrel -inferdep -quiet -hide java.* -collpackages java.util.* -qualify
+                        -postfixpackage -nodefontsize 9
+                        -nodefontpackagesize 7
+                    </additionalparam>
+                </configuration>  -->
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>taglist-maven-plugin</artifactId>
+                <version>2.3</version>
+            </plugin>
+<!--            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>changelog-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-changes-plugin</artifactId>
+                <reportSets>
+                    <reportSet>
+                        <id>dual-report</id>
+                        <configuration>
+                            <type>range</type>
+                            <range>30</range>
+                        </configuration>
+                        <reports>
+                            <report>changes-report</report>
+                            <report>changelog</report>
+                            <report>file-activity</report>
+                            <report>dev-activity</report>
+                        </reports>
+                    </reportSet>
+                </reportSets>
+            </plugin>
+                    <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>jxr-maven-plugin</artifactId>
+                <version>2.0-beta-1</version>
+            </plugin>
+-->
+            <!-- PMD plugin -->
+            <plugin>
+                <artifactId>maven-pmd-plugin</artifactId>
+                <version>2.3</version>
+                <configuration>
+                    <linkXref>true</linkXref>
+                    <sourceEncoding>UTF-8</sourceEncoding>
+                    <minimumTokens>30</minimumTokens>
+                    <targetJdk>1.5</targetJdk>
+                    <rulesets>
+                        <ruleset>/rulesets/basic.xml</ruleset>
+                        <ruleset>/rulesets/controversial.xml</ruleset>
+                        <ruleset>/rulesets/codesize.xml</ruleset>
+                        <ruleset>/rulesets/design.xml</ruleset>
+                        <ruleset>/rulesets/optimizations.xml</ruleset>
+                        <ruleset>/rulesets/strings.xml</ruleset>
+                        <ruleset>/rulesets/strictexception.xml</ruleset>
+                        <ruleset>/rulesets/naming.xml</ruleset>
+                        <ruleset>/rulesets/unusedcode.xml</ruleset>
+                        <ruleset>/rulesets/imports.xml</ruleset>
+                        <ruleset>/rulesets/junit.xml</ruleset>
+                        <ruleset>/rulesets/braces.xml</ruleset>
+                        <ruleset>/rulesets/javabeans.xml</ruleset>
+                        <ruleset>/rulesets/coupling.xml</ruleset>
+                    </rulesets>
+                </configuration>
+            </plugin>
+        </plugins>
+    </reporting>
+
+</project>

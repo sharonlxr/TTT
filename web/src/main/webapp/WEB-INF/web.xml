@@ -1,0 +1,50 @@
+<!DOCTYPE web-app PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN" "http://java.sun.com/dtd/web-app_2_3.dtd">
+
+<web-app>
+	<display-name>Tool Time Tracker 4.6</display-name>
+	<filter>
+    	<filter-name>SessionFilter</filter-name>
+    	<filter-class>com.freescale.stateStamper.controller.SessionFilter</filter-class>
+    	<init-param>
+        	<param-name>nonSession-URL</param-name>
+        	<param-value>index.jsp, index.jnlp, index.html, getMachinesHTML.do, 
+        			getConnections.do, getSummarySchedule.do, getGroups.do,  
+        			getReports.do, durable_main.do, durable_monitor.do</param-value>
+    	</init-param>
+  	</filter>
+  	<filter-mapping>
+    	<filter-name>SessionFilter</filter-name>
+    	<url-pattern>/*</url-pattern>
+  	</filter-mapping>
+  	<filter>
+		<filter-name>struts2</filter-name>
+		<filter-class>org.apache.struts2.dispatcher.ng.filter.StrutsPrepareAndExecuteFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>struts2</filter-name>
+		<url-pattern>*.action</url-pattern>
+	</filter-mapping>   
+	<servlet>
+		<servlet-name>controller</servlet-name>
+		<servlet-class>com.freescale.stateStamper.controller.Controller</servlet-class>
+		<load-on-startup>0</load-on-startup>
+	</servlet>
+	<servlet>
+		<servlet-name>JnlpDownloadServlet</servlet-name>
+		<servlet-class>com.sun.javaws.servlet.JnlpDownloadServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>controller</servlet-name>
+		<url-pattern>*.do</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping><servlet-name>JnlpDownloadServlet</servlet-name>
+		<url-pattern>*.jnlp</url-pattern>
+	</servlet-mapping>	
+	<session-config> 
+		<session-timeout>30</session-timeout>
+	</session-config>
+	<mime-mapping>
+		<extension>xls</extension>
+		<mime-type>application/vnd.ms-excel</mime-type>
+	</mime-mapping>
+</web-app>

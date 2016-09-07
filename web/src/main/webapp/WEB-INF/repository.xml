@@ -1,0 +1,766 @@
+
+<!-- This is a sample metadata repository for the
+     Apache ObJectRelationalBridge (OJB) System.
+     Use this file as a template for building your own mappings.
+-->
+
+<!-- doctype definition
+     By default we are using a local DTD that is expected to reside
+     in the same directory as this repository.xml file.
+     If you intend to validate your repository.xml against
+     the public dtd at the Apache site, please replace the string
+     "repository.dtd"
+     by the public adress
+     "http://db.apache.org/ojb/dtds/1.0/repository.dtd".
+     In this case validation will only work if the machine you
+     run your application on can connect to the internet!
+-->
+
+<!DOCTYPE descriptor-repository PUBLIC
+       "-//Apache Software Foundation//DTD OJB Repository//EN"
+       "repository.dtd"
+[
+
+<!ENTITY database SYSTEM "repository_database.xml">
+<!ENTITY internal SYSTEM "repository_internal.xml">
+<!-- here the junit include files begin  -->
+<!ENTITY junit SYSTEM "repository_junit.xml">
+<!ENTITY junit_odmg SYSTEM "repository_junit_odmg.xml">
+<!ENTITY junit_otm SYSTEM "repository_junit_otm.xml">
+<!ENTITY junit_ref SYSTEM "repository_junit_reference.xml">
+<!ENTITY junit_meta_seq SYSTEM "repository_junit_meta_seq.xml">
+<!ENTITY junit_cache SYSTEM "repository_junit_cache.xml">
+<!ENTITY junit_model SYSTEM "repository_junit_model.xml">
+<!ENTITY junit_cloneable SYSTEM "repository_junit_cloneable.xml">
+<!ENTITY junit_inheritance SYSTEM "repository_junit_inheritance.xml">
+<!ENTITY junit_pathClass SYSTEM "repository_junit_pathClass.xml">
+
+<!ENTITY user SYSTEM "repository_user.xml">
+<!ENTITY ejb SYSTEM "repository_ejb.xml">
+]>
+
+
+<descriptor-repository version="1.0" isolation-level="read-uncommitted"
+        proxy-prefetching-limit="50">
+
+    <!-- include all used database connections -->
+    &database;
+
+    <!-- include ojb internal mappings here -->
+    &internal;
+
+    <!-- include user defined mappings here -->
+   
+	<class-descriptor class="com.freescale.stateStamper.model.entity.Administrator" table="TTT_USER">
+		<field-descriptor name="tttUserPk" column="TTT_USER_PK" jdbc-type="INTEGER" primarykey="true" autoincrement="true" sequence-name="TTT_USER_SEQ"/>
+		<field-descriptor name="coreId" column="CORE_ID" jdbc-type="VARCHAR"/>
+		<field-descriptor name="firstName" column="FIRST_NAME" jdbc-type="VARCHAR"/>
+		<field-descriptor name="lastName" column="LAST_NAME" jdbc-type="VARCHAR"/>
+		<field-descriptor name="eMail" column="E_MAIL" jdbc-type="VARCHAR"/>
+		<field-descriptor name="rolePK" column="ROLE_PK" jdbc-type="INTEGER"/>
+		<field-descriptor name="areaPK" column="AREA_PK" jdbc-type="INTEGER"/>
+		<reference-descriptor name="role" class-ref="com.freescale.stateStamper.model.entity.Role" auto-retrieve="true" auto-update="false" auto-delete="false" >
+		<foreignkey field-ref="rolePK"/>
+		</reference-descriptor>
+		<reference-descriptor name="area" class-ref="com.freescale.stateStamper.model.entity.Area" auto-retrieve="true" auto-update="false" auto-delete="false" >
+		   <foreignkey field-ref="areaPK"/>
+		</reference-descriptor>
+	</class-descriptor>
+	
+	<class-descriptor class="com.freescale.stateStamper.model.entity.Role" table="ROLE">
+		<field-descriptor name="rolePK" column="ROLE_PK" jdbc-type="INTEGER" primarykey="true" autoincrement="true" sequence-name="ROLE_SEQ"/>
+		<field-descriptor name="rolename" column="ROLE_NAME" jdbc-type="VARCHAR"/>
+		<field-descriptor name="equipmenttypePK" column="EQUIPMENT_TYPE_PK" jdbc-type="INTEGER"/>		
+		<collection-descriptor name="permissions" 
+            collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList"
+           element-class-ref="com.freescale.stateStamper.model.entity.Permission"
+           auto-retrieve="true"
+           auto-update="true" 
+           indirection-table="PERMISSION_ROLE_MAP"    >		
+     <fk-pointing-to-this-class column="ROLE_PK"/>
+     <fk-pointing-to-element-class column="PERMISSION_PK"/>
+  </collection-descriptor>
+	</class-descriptor>
+	
+	<class-descriptor class="com.freescale.stateStamper.model.entity.Permission" table="PERMISSION">
+		<field-descriptor name="permissionPK" column="PERMISSION_PK" jdbc-type="INTEGER" primarykey="true" autoincrement="true" sequence-name="PERMISSION_SEQ"/>
+		<field-descriptor name="subaction" column="SUBACTION" jdbc-type="VARCHAR" conversion="com.freescale.stateStamper.db.StringArray2VarcharFieldConversion"/>
+		<field-descriptor name="action" column="ACTION" jdbc-type="VARCHAR"/>
+		<field-descriptor name="stateTransitionPK" column="STATE_TRANSITIONS_PK" jdbc-type="INTEGER"/>
+		<collection-descriptor name="roles"
+                               collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList"
+     element-class-ref="com.freescale.stateStamper.model.entity.Role"
+     auto-retrieve="true"
+     auto-update="false"
+     indirection-table="PERMISSION_ROLE_MAP"
+  		>
+     <fk-pointing-to-this-class column="PERMISSION_PK"/>
+     <fk-pointing-to-element-class column="ROLE_PK"/>
+  </collection-descriptor>
+	</class-descriptor>	
+		
+
+	<class-descriptor class="com.freescale.stateStamper.model.entity.Event" table="EVENT">
+		<field-descriptor name="primaryKey" column="EVENT_PK" jdbc-type="INTEGER" primarykey="true" autoincrement="true" sequence-name="EVENT_SEQ"/>
+		<field-descriptor name="name" column="EVENT_NAME" jdbc-type="VARCHAR"/>
+	</class-descriptor>
+	
+	<class-descriptor class="com.freescale.stateStamper.model.entity.BusinessRule" table="BUSINESS_RULES">
+		<field-descriptor name="primaryKey" column="BUSINESS_RULES_PK" jdbc-type="INTEGER" primarykey="true" autoincrement="true" sequence-name="BUSINESS_RULES_SEQ"/>
+		<field-descriptor name="name" column="NAME" jdbc-type="VARCHAR"/>
+		<field-descriptor name="eventPk" column="EVENT_PK" jdbc-type="INTEGER"/>
+		<field-descriptor name="equipmentTypePk" column="EQUIPMENT_TYPE_PK" jdbc-type="INTEGER"/>
+		<reference-descriptor name="event" class-ref="com.freescale.stateStamper.model.entity.Event" auto-retrieve="true" auto-update="false" auto-delete="false" >
+		   <foreignkey field-ref="eventPk"/>
+		</reference-descriptor>
+		
+		<collection-descriptor name="conditions" element-class-ref="com.freescale.stateStamper.model.entity.BusinessRuleCondition" orderby="primaryKey" sort="DESC" >
+         <inverse-foreignkey field-ref="businessRulePk"/>
+        </collection-descriptor>
+		<collection-descriptor name="actions" element-class-ref="com.freescale.stateStamper.model.entity.BusinessRuleAction" orderby="primaryKey" sort="DESC" >
+         <inverse-foreignkey field-ref="businessRulePk"/>
+        </collection-descriptor>
+	</class-descriptor>
+	
+	<class-descriptor class="com.freescale.stateStamper.model.entity.BusinessRuleCondition" table="BUSINESS_RULES_CONDITIONS">
+		<field-descriptor name="primaryKey" column="BUSINESS_RULES_CONDITIONS_PK" jdbc-type="INTEGER" primarykey="true" autoincrement="true" sequence-name="BUSINESS_RULES_CONDITIONS_SEQ"/>
+		<field-descriptor name="attribute" column="ATTRIBUTE" jdbc-type="VARCHAR"/>
+		<field-descriptor name="condition" column="CONDITION" jdbc-type="VARCHAR"/>
+		<field-descriptor name="condValue" column="COND_VALUE" jdbc-type="VARCHAR"/>	
+		<field-descriptor name="businessRulePk" column="BUSINESS_RULES_PK" jdbc-type="INTEGER"/>	
+	</class-descriptor>
+	
+	<class-descriptor class="com.freescale.stateStamper.model.entity.BusinessRuleAction" table="BUSINESS_RULES_ACTIONS">
+		<field-descriptor name="primaryKey" column="BUSINESS_RULES_ACTIONS_PK" jdbc-type="INTEGER" primarykey="true" autoincrement="true" sequence-name="BUSINESS_RULES_ACTIONS_SEQ"/>
+		<field-descriptor name="action" column="ACTION" jdbc-type="VARCHAR"/>
+		<field-descriptor name="actionParameters" column="ACTION_PARAMETERS" jdbc-type="VARCHAR" conversion="com.freescale.stateStamper.db.Map2Json"/>
+		<field-descriptor name="businessRulePk" column="BUSINESS_RULES_PK" jdbc-type="INTEGER"/>	
+	</class-descriptor>
+	
+	<class-descriptor class="com.freescale.stateStamper.model.entity.Machine" table="EQUIPMENT">
+		<field-descriptor name="primaryKey" column="EQUIPMENT_PK" jdbc-type="INTEGER" primarykey="true" autoincrement="true" sequence-name="EQUIPMENT_SEQ"/>
+		<field-descriptor name="eIName" column="EQUIPMENT_NAME" jdbc-type="VARCHAR"/>
+		<field-descriptor name="mESName" column="MES_NAME" jdbc-type="VARCHAR"/>
+		<field-descriptor name="type" column="CLASS" jdbc-type="VARCHAR"/>
+		<field-descriptor name="location" column="LOCATION" jdbc-type="VARCHAR"/>
+		<field-descriptor name="pic_Host" column="PIC_HOST" jdbc-type="VARCHAR"/>
+		<field-descriptor name="pic_Port" column="PIC_PORT" jdbc-type="VARCHAR"/>
+		<field-descriptor name="dmhbox" column="DMHBOX" jdbc-type="VARCHAR"/>
+		<field-descriptor name="serial_number" column="SERIAL_NUMBER" jdbc-type="VARCHAR"/>
+		<field-descriptor name="engineer_contact" column="ENGINEER_CONTACT" jdbc-type="VARCHAR"/>
+		<field-descriptor name="vendor" column="VENDOR" jdbc-type="VARCHAR"/>
+		<field-descriptor name="workstation" column="WORKSTATION" jdbc-type="VARCHAR"/>
+		<field-descriptor name="area_pk" column="AREA_PK" jdbc-type="INTEGER"/>		
+		<field-descriptor name="platform" column="PLATFORM" jdbc-type="VARCHAR"/>
+		<field-descriptor name="deviceGroup" column="DEVICE_GROUP" jdbc-type="VARCHAR"/>				
+		<field-descriptor name="dynamicAttributes" column="DYNAMIC_ATTRIBUTES" jdbc-type="VARCHAR" conversion="com.freescale.stateStamper.db.Map2Json"/>
+		<field-descriptor name="children" column="CHILDREN" jdbc-type="VARCHAR" conversion="com.freescale.stateStamper.db.Map2Json"/>
+		<field-descriptor name="equipmentType_pk" column="EQUIPMENT_TYPE_PK" jdbc-type="INTEGER"/>
+		<field-descriptor name="modelName" column="MODEL_NAME" jdbc-type="VARCHAR"/>
+		<field-descriptor name="modelPk" column="MODEL_PK" jdbc-type="INTEGER"/>
+		<reference-descriptor name="model" class-ref="com.freescale.stateStamper.model.entity.Model" auto-retrieve="true" auto-update="false" auto-delete="false" >
+		   <foreignkey field-ref="modelPk"/>
+		</reference-descriptor>
+		<reference-descriptor name="equipmentType" class-ref="com.freescale.stateStamper.model.entity.EquipmentType" auto-retrieve="true" auto-update="false" auto-delete="false" >
+		   <foreignkey field-ref="equipmentType_pk"/>
+		</reference-descriptor>
+		<reference-descriptor name="area" class-ref="com.freescale.stateStamper.model.entity.Area" auto-retrieve="true" auto-update="false" auto-delete="false" >
+		   <foreignkey field-ref="area_pk"/>
+		</reference-descriptor>
+		<collection-descriptor name="attachments" element-class-ref="com.freescale.stateStamper.model.entity.Attachment" orderby="attachmentPk" sort="ASC" auto-retrieve="true">
+			<inverse-foreignkey field-ref="equipmentPk"/>
+		</collection-descriptor>
+	</class-descriptor>
+	
+	<class-descriptor class="com.freescale.stateStamper.model.entity.Model" table="MODEL">
+		<field-descriptor name="primaryKey" column="MODEL_PK" jdbc-type="INTEGER" primarykey="true" autoincrement="true" sequence-name="MODEL_SEQ"/>
+		<field-descriptor name="modelName" column="MODEL_NAME" jdbc-type="VARCHAR"/>
+		<field-descriptor name="modelDescription" column="MODEL_DESCRIPTION" jdbc-type="VARCHAR"/>
+		<field-descriptor name="engineerContact" column="ENGINEER_CONTACT" jdbc-type="VARCHAR"/>
+		<field-descriptor name="vendor" column="VENDOR" jdbc-type="VARCHAR"/>
+		<field-descriptor name="platform" column="PLATFORM" jdbc-type="VARCHAR"/>
+		<field-descriptor name="status" column="STATUS" jdbc-type="VARCHAR"/>
+		<field-descriptor name="modelAttributes" column="MODEL_ATTRIBUTES" jdbc-type="VARCHAR" conversion="com.freescale.stateStamper.db.Map2Json"/>		
+		<field-descriptor name="dynamicAttributes" column="DYNAMIC_ATTRIBUTES" jdbc-type="VARCHAR" conversion="com.freescale.stateStamper.db.Map2Json"/>
+		<field-descriptor name="creator" column="CREATOR" jdbc-type="VARCHAR"/>
+		<field-descriptor name="createDate" column="CREATE_DATE" jdbc-type="VARCHAR"/>
+		<field-descriptor name="approver" column="APPROVER" jdbc-type="VARCHAR"/>
+		<field-descriptor name="approveDate" column="APPROVE_DATE" jdbc-type="VARCHAR"/>
+		<field-descriptor name="releaser" column="RELEASER" jdbc-type="VARCHAR"/>
+		<field-descriptor name="releaseDate" column="RELEASE_DATE" jdbc-type="VARCHAR"/>
+		<field-descriptor name="lastUpdateBy" column="LAST_UPDATE_BY" jdbc-type="VARCHAR"/>
+		<field-descriptor name="lastUpdateDate" column="LAST_UPDATE_DATE" jdbc-type="VARCHAR"/>
+		<field-descriptor name="mfrCode" column="MFR_CODE" jdbc-type="VARCHAR"/>
+		<field-descriptor name="equipmentTypePk" column="EQUIPMENT_TYPE_PK" jdbc-type="INTEGER"/>
+		<field-descriptor name="areaPk" column="AREA_PK" jdbc-type="INTEGER"/>
+		<field-descriptor name="modelMapping" column="MODEL_MAPPING" jdbc-type="VARCHAR" conversion="com.freescale.stateStamper.db.Map2Json"/>
+		<reference-descriptor name="equipmentType" class-ref="com.freescale.stateStamper.model.entity.EquipmentType" auto-retrieve="true" auto-update="false" auto-delete="false" >
+		   <foreignkey field-ref="equipmentTypePk"/>
+		</reference-descriptor>
+		<reference-descriptor name="area" class-ref="com.freescale.stateStamper.model.entity.Area" auto-retrieve="true" auto-update="false" auto-delete="false" >
+		   <foreignkey field-ref="areaPk"/>
+		</reference-descriptor>
+	</class-descriptor>
+
+	<class-descriptor class="com.freescale.stateStamper.model.entity.EquipmentType" table="EQUIPMENT_TYPE">
+		<field-descriptor name="primaryKey" column="EQUIPMENT_TYPE_PK" jdbc-type="INTEGER" primarykey="true" autoincrement="true" sequence-name="EQUIPMENT_TYPE_SEQ"/>
+		<field-descriptor name="name" column="TYPE_NAME" jdbc-type="VARCHAR"/>
+		<field-descriptor name="container" column="CONTAINER" jdbc-type="VARCHAR"/>		
+		<field-descriptor name="propStatus" column="PROPAGATE" jdbc-type="VARCHAR"/>
+		<field-descriptor name="parent" column="PARENT" jdbc-type="VARCHAR"/>
+		<field-descriptor name="siblings" column="SIBLINGS" jdbc-type="VARCHAR"/>
+		<field-descriptor name="areaPK" column="AREA_PK" jdbc-type="INTEGER"/>
+		<field-descriptor name="mesEquipmentType" column="MES_TYPE" jdbc-type="VARCHAR"/>
+		<field-descriptor name="mesEquipmentSync" column="MES_EQUIPMENT_SYNC" jdbc-type="VARCHAR"/>
+		<field-descriptor name="syncModelFlag" column="SYNC_MODEL_FLAG" jdbc-type="VARCHAR"/>
+		<field-descriptor name="platformSource" column="SOR_PLATFORM" jdbc-type="VARCHAR"/>
+		<field-descriptor name="modelSource" column="SOR_MODEL" jdbc-type="VARCHAR"/>
+		<field-descriptor name="childSource" column="SOR_CHILD" jdbc-type="VARCHAR"/>
+		<field-descriptor name="picHost" column="PIC_HOST" jdbc-type="VARCHAR"/>
+		<field-descriptor name="picPort" column="PIC_PORT" jdbc-type="VARCHAR"/>
+		<field-descriptor name="picName" column="PIC_NAME" jdbc-type="VARCHAR"/>
+		<field-descriptor name="configOptions" column="CONFIG_OPTIONS" jdbc-type="VARCHAR" conversion="com.freescale.stateStamper.db.Map2Json"/>
+		<reference-descriptor name="area" class-ref="com.freescale.stateStamper.model.entity.Area" auto-retrieve="true" auto-update="false" auto-delete="false" >
+		   <foreignkey field-ref="areaPK"/>
+		</reference-descriptor>
+		<collection-descriptor name="attributes" element-class-ref="com.freescale.stateStamper.model.entity.EquipmentAttribute" orderby="primaryKey" sort="DESC" >
+         <inverse-foreignkey field-ref="typeKey"/>
+        </collection-descriptor>
+		<collection-descriptor name="businessRules" element-class-ref="com.freescale.stateStamper.model.entity.BusinessRule" orderby="primaryKey" sort="DESC" >
+         <inverse-foreignkey field-ref="equipmentTypePk"/>
+        </collection-descriptor>
+	</class-descriptor>
+
+	<class-descriptor class="com.freescale.stateStamper.model.entity.EquipmentAttribute" table="EQUIPMENT_ATTRIBUTE">
+		<field-descriptor name="primaryKey" column="EQUIPMENT_ATTRIBUTE_PK" jdbc-type="INTEGER" primarykey="true" autoincrement="true" sequence-name="EQUIPMENT_ATTRIBUTE_SEQ"/>
+		<field-descriptor name="name" column="ATTRIBUTE_NAME" jdbc-type="VARCHAR"/>
+		<field-descriptor name="type" column="TYPE" jdbc-type="VARCHAR"/>		
+		<field-descriptor name="configOptions" column="VALIDATION_RULE" jdbc-type="VARCHAR" conversion="com.freescale.stateStamper.db.Map2Json"/>
+		<field-descriptor name="required" column="REQUIRED" jdbc-type="VARCHAR"/>
+		<field-descriptor name="isstatic" column="STATIC" jdbc-type="VARCHAR"/>
+		<field-descriptor name="typeKey" column="EQUIPMENT_TYPE_PK" jdbc-type="INTEGER"/>
+		<field-descriptor name="belongs" column="BELONGS" jdbc-type="VARCHAR"/>
+		<field-descriptor name="attributeAlias" column="ATTRIBUTE_ALIAS" jdbc-type="VARCHAR"/>
+	</class-descriptor>
+
+	<class-descriptor class="com.freescale.stateStamper.model.entity.Substate" table="SUBSTATE">
+		<field-descriptor name="primaryKey" column="SUBSTATE_PK" jdbc-type="INTEGER" primarykey="true" autoincrement="true" sequence-name="SUBSTATE_SEQ"/>
+		<field-descriptor name="substate" column="SUBSTATE" jdbc-type="VARCHAR"/>
+		<field-descriptor name="group" column="SUB_GROUP" jdbc-type="VARCHAR"/>
+		<field-descriptor name="color" column="COLOR" jdbc-type="VARCHAR"/>
+		<field-descriptor name="limit" column="LIMIT" jdbc-type="INTEGER"/>	
+		<field-descriptor name="e10" column="E10" jdbc-type="VARCHAR"/>
+		<field-descriptor name="equipmenttypePK" column="EQUIPMENT_TYPE_PK" jdbc-type="INTEGER"/>	
+	</class-descriptor>
+
+   <class-descriptor class="com.freescale.stateStamper.model.entity.Transitions" table="STATE_TRANSITION">
+		<field-descriptor name="primaryKey" column="STATE_TRANSITIONS_PK" jdbc-type="INTEGER" primarykey="true" autoincrement="true" sequence-name="STATE_TRANSITION_SEQ"/>
+		<field-descriptor name="from" column="FROM_STATE" jdbc-type="VARCHAR"/>
+		<field-descriptor name="to" column="TO_STATE" jdbc-type="VARCHAR"/>
+		<field-descriptor name="enabled" column="ENABLED" jdbc-type="VARCHAR" conversion="com.freescale.stateStamper.db.Boolean2VarcharFieldConversion"/>	
+		<field-descriptor name="fromStatePK" column="FROM_STATE_PK" jdbc-type="INTEGER"/>
+		<field-descriptor name="toStatePk" column="TO_STATE_PK" jdbc-type="INTEGER"/>	
+		<field-descriptor name="actionBlock" column="ACTION_BLOCK_PK" jdbc-type="INTEGER"/>		
+		<field-descriptor name="equipmentTypePK" column="EQUIPMENT_TYPE_PK" jdbc-type="INTEGER"/>
+        <field-descriptor name="activity" column="ACTIVITY" jdbc-type="VARCHAR"/>				
+		<collection-descriptor name="conditions" element-class-ref="com.freescale.stateStamper.model.entity.TransitionCondition" orderby="primaryKey" sort="ASC" auto-retrieve="true">
+			<inverse-foreignkey field-ref="stateTransition_pk"/>
+		</collection-descriptor>
+		<collection-descriptor name="actions" element-class-ref="com.freescale.stateStamper.model.entity.TransitionAction" orderby="primaryKey" sort="ASC" auto-retrieve="true">
+			<inverse-foreignkey field-ref="transitionPk"/>
+		</collection-descriptor>
+	</class-descriptor>
+
+   <class-descriptor class="com.freescale.stateStamper.model.entity.TransitionCondition" table="TRANSITIONS_CONDITIONS">
+		<field-descriptor name="primaryKey" column="TRANSITIONS_CONDITIONS_PK" jdbc-type="INTEGER" primarykey="true" autoincrement="true" sequence-name="TRANSITIONS_CONDITIONS_SEQ"/>
+		<field-descriptor name="attribute" column="ATTRIBUTE" jdbc-type="VARCHAR"/>
+		<field-descriptor name="condition" column="CONDITION" jdbc-type="VARCHAR"/>
+		<field-descriptor name="condValue" column="COND_VALUE" jdbc-type="VARCHAR"/>
+		<field-descriptor name="order" column="CONDITION_ORDER" jdbc-type="VARCHAR"/>
+		<field-descriptor name="stateTransition_pk" column="STATE_TRANSITIONS_PK" jdbc-type="INTEGER"/>	
+					
+	</class-descriptor>
+
+	<class-descriptor class="com.freescale.stateStamper.model.entity.TransitionAction" table="TRANSITIONS_ACTIONS">
+		<field-descriptor name="primaryKey" column="TRANSITIONS_ACTIONS_PK" jdbc-type="INTEGER" primarykey="true" autoincrement="true" sequence-name="TRANSITIONS_ACTIONS_SEQ"/>
+		<field-descriptor name="action" column="ACTION" jdbc-type="VARCHAR"/>
+		<field-descriptor name="actionParameters" column="ACTION_PARAMETERS" jdbc-type="VARCHAR" conversion="com.freescale.stateStamper.db.Map2Json"/>
+		<field-descriptor name="transitionPk" column="TRANSITION_PK" jdbc-type="INTEGER"/>	
+	</class-descriptor>
+
+	<class-descriptor class="com.freescale.stateStamper.model.entity.Report" table="SCHEDULED_REPORT">
+		<field-descriptor name="reportPK" column="SCHEDULED_REPORTS_PK" jdbc-type="INTEGER" primarykey="true" autoincrement="true" sequence-name="SCHEDULED_REPORT_SEQ"/>
+		<field-descriptor name="reportType" column="REPORT_TYPE" jdbc-type="VARCHAR"/>
+		<field-descriptor name="equipmentTypePk" column="EQUIPMENT_TYPE_PK" jdbc-type="INTEGER"/>
+		<field-descriptor name="period" column="PERIODS" jdbc-type="VARCHAR"/>
+		<field-descriptor name="numberPeriods" column="NUMBER_PERIODS" jdbc-type="DOUBLE"/>
+		<field-descriptor name="grouping" column="GROUPING" jdbc-type="VARCHAR" />
+		<field-descriptor name="types" column="CLASS" jdbc-type="VARCHAR" conversion="com.freescale.stateStamper.db.StringArray2VarcharFieldConversion"/>
+		<field-descriptor name="locations" column="LOCATION" jdbc-type="VARCHAR" conversion="com.freescale.stateStamper.db.StringArray2VarcharFieldConversion"/>
+		<field-descriptor name="isHTML" column="FORMAT" jdbc-type="VARCHAR" conversion="com.freescale.stateStamper.db.Boolean2FormatFieldConversion" />
+        <field-descriptor name="emails" column="EMAILS" jdbc-type="VARCHAR" conversion="com.freescale.stateStamper.db.EmailVector2Varchar" />		
+        <field-descriptor name="exclusions" column="EXCLUSION" jdbc-type="VARCHAR" conversion="com.freescale.stateStamper.db.MachineVector2VarcharFieldConversion" />
+        <field-descriptor name="includeAll" column="INCLUDE_ALL" jdbc-type="VARCHAR" conversion="com.freescale.stateStamper.db.Boolean2VarcharFieldConversion"/>
+        <field-descriptor name="shiftHours" column="SHIFT_HOURS" jdbc-type="VARCHAR" conversion="com.freescale.stateStamper.db.Boolean2VarcharFieldConversion"/>
+	</class-descriptor>
+
+	<class-descriptor class="com.freescale.stateStamper.model.entity.Status" table="STATUS">
+		<field-descriptor name="STATUS_PK" column="STATUS_PK" jdbc-type="INTEGER" primarykey="true" autoincrement="true" sequence-name="STATUS_SEQ"/>
+		<field-descriptor name="EQUIPMENT_PK" column="EQUIPMENT_PK" jdbc-type="INTEGER"/>
+		<field-descriptor name="MID" column="MID" jdbc-type="VARCHAR"/>
+		<field-descriptor name="TIME" column="TIME" jdbc-type="VARCHAR"/>
+		<field-descriptor name="PERIOD" column="PERIOD" jdbc-type="VARCHAR"/>	
+		<field-descriptor name="STATE" column="STATE" jdbc-type="VARCHAR"/>	
+		<field-descriptor name="SUBSTATE" column="SUBSTATE" jdbc-type="VARCHAR"/>		
+		<field-descriptor name="LOT_ID" column="LOT_ID" jdbc-type="VARCHAR"/>
+		<field-descriptor name="DEVICE_ID" column="DEVICE_ID" jdbc-type="VARCHAR"/>										
+		<field-descriptor name="TEST_PROGRAM" column="TEST_PROGRAM" jdbc-type="VARCHAR"/>												
+		<field-descriptor name="TEMPERATURE" column="TEMPERATURE" jdbc-type="VARCHAR"/>												
+		<field-descriptor name="INSERTIONS" column="INSERTIONS" jdbc-type="VARCHAR"/>
+		<field-descriptor name="RESCREEN" column="RESCREEN" jdbc-type="VARCHAR"/>
+		<field-descriptor name="HANDLER_ID" column="HANDLER_ID" jdbc-type="VARCHAR"/>
+		<field-descriptor name="SITES_AVAILABLE" column="SITES_AVAILABLE" jdbc-type="VARCHAR"/>
+		<field-descriptor name="LOADBOARD_ID" column="LOADBOARD_ID" jdbc-type="VARCHAR"/>		
+		<field-descriptor name="OPERATOR_ID" column="OPERATOR_ID" jdbc-type="VARCHAR"/>				
+		<field-descriptor name="DEVICES_PROCESSED" column="DEVICES_PROCESSED" jdbc-type="VARCHAR"/>				
+		<field-descriptor name="RETEST" column="RETEST" jdbc-type="VARCHAR"/>						
+		<field-descriptor name="CNT_GOOD" column="CNT_GOOD" jdbc-type="VARCHAR"/>						
+  	    <field-descriptor name="TEST_TIME" column="TEST_TIME" jdbc-type="VARCHAR"/>	
+  	    <field-descriptor name="HND_INDEX_TIME" column="HND_INDEX_TIME" jdbc-type="VARCHAR"/>	
+  	    <field-descriptor name="SITE0_HB1" column="SITE0_HB1" jdbc-type="VARCHAR"/>
+  	    <field-descriptor name="SITE0_HB$" column="SITE0_HB$" jdbc-type="VARCHAR"/>
+  	    <field-descriptor name="SITE1_HB1" column="SITE1_HB1" jdbc-type="VARCHAR"/>
+  	    <field-descriptor name="SITE1_HB$" column="SITE1_HB$" jdbc-type="VARCHAR"/>
+  	    <field-descriptor name="SITE2_HB1" column="SITE2_HB1" jdbc-type="VARCHAR"/>
+  	    <field-descriptor name="SITE2_HB$" column="SITE2_HB$" jdbc-type="VARCHAR"/>
+  	    <field-descriptor name="SITE3_HB1" column="SITE3_HB1" jdbc-type="VARCHAR"/>
+  	    <field-descriptor name="SITE3_HB$" column="SITE3_HB$" jdbc-type="VARCHAR"/>
+  	    <field-descriptor name="SITE4_HB1" column="SITE4_HB1" jdbc-type="VARCHAR"/>
+  	    <field-descriptor name="SITE4_HB$" column="SITE4_HB$" jdbc-type="VARCHAR"/>
+  	    <field-descriptor name="SITE5_HB1" column="SITE5_HB1" jdbc-type="VARCHAR"/>
+  	    <field-descriptor name="SITE5_HB$" column="SITE5_HB$" jdbc-type="VARCHAR"/>
+  	    <field-descriptor name="SITE6_HB1" column="SITE6_HB1" jdbc-type="VARCHAR"/>
+  	    <field-descriptor name="SITE6_HB$" column="SITE6_HB$" jdbc-type="VARCHAR"/>
+  	    <field-descriptor name="SITE7_HB1" column="SITE7_HB1" jdbc-type="VARCHAR"/>
+  	    <field-descriptor name="SITE7_HB$" column="SITE7_HB$" jdbc-type="VARCHAR"/>
+  	    <field-descriptor name="SITE8_HB1" column="SITE8_HB1" jdbc-type="VARCHAR"/>
+  	    <field-descriptor name="SITE8_HB$" column="SITE8_HB$" jdbc-type="VARCHAR"/>
+  	    <field-descriptor name="SITE9_HB1" column="SITE9_HB1" jdbc-type="VARCHAR"/>
+  	    <field-descriptor name="SITE9_HB$" column="SITE9_HB$" jdbc-type="VARCHAR"/>
+  	    <field-descriptor name="SITE10_HB1" column="SITE10_HB1" jdbc-type="VARCHAR"/>
+  	    <field-descriptor name="SITE10_HB$" column="SITE10_HB$" jdbc-type="VARCHAR"/>
+  	    <field-descriptor name="SITE11_HB1" column="SITE11_HB1" jdbc-type="VARCHAR"/>
+  	    <field-descriptor name="SITE11_HB$" column="SITE11_HB$" jdbc-type="VARCHAR"/>
+  	    <field-descriptor name="SITE12_HB1" column="SITE12_HB1" jdbc-type="VARCHAR"/>
+  	    <field-descriptor name="SITE12_HB$" column="SITE12_HB$" jdbc-type="VARCHAR"/>
+  	    <field-descriptor name="SITE13_HB1" column="SITE13_HB1" jdbc-type="VARCHAR"/>
+  	    <field-descriptor name="SITE13_HB$" column="SITE13_HB$" jdbc-type="VARCHAR"/>
+  	    <field-descriptor name="SITE14_HB1" column="SITE14_HB1" jdbc-type="VARCHAR"/>
+  	    <field-descriptor name="SITE14_HB$" column="SITE14_HB$" jdbc-type="VARCHAR"/>
+  	    <field-descriptor name="SITE15_HB1" column="SITE15_HB1" jdbc-type="VARCHAR"/>
+  	    <field-descriptor name="SITE15_HB$" column="SITE15_HB$" jdbc-type="VARCHAR"/>
+  	    <field-descriptor name="SITE16_HB1" column="SITE16_HB1" jdbc-type="VARCHAR"/>
+  	    <field-descriptor name="SITE16_HB$" column="SITE16_HB$" jdbc-type="VARCHAR"/>
+  	    <field-descriptor name="SITE17_HB1" column="SITE17_HB1" jdbc-type="VARCHAR"/>
+  	    <field-descriptor name="SITE17_HB$" column="SITE17_HB$" jdbc-type="VARCHAR"/>
+  	    <field-descriptor name="SITE18_HB1" column="SITE18_HB1" jdbc-type="VARCHAR"/>
+  	    <field-descriptor name="SITE18_HB$" column="SITE18_HB$" jdbc-type="VARCHAR"/>
+  	    <field-descriptor name="SITE19_HB1" column="SITE19_HB1" jdbc-type="VARCHAR"/>
+  	    <field-descriptor name="SITE19_HB$" column="SITE19_HB$" jdbc-type="VARCHAR"/>
+  	    <field-descriptor name="SITE20_HB1" column="SITE20_HB1" jdbc-type="VARCHAR"/>
+  	    <field-descriptor name="SITE20_HB$" column="SITE20_HB$" jdbc-type="VARCHAR"/>
+  	    <field-descriptor name="SITE21_HB1" column="SITE21_HB1" jdbc-type="VARCHAR"/>
+  	    <field-descriptor name="SITE21_HB$" column="SITE21_HB$" jdbc-type="VARCHAR"/>
+  	    <field-descriptor name="SITE22_HB1" column="SITE22_HB1" jdbc-type="VARCHAR"/>
+  	    <field-descriptor name="SITE22_HB$" column="SITE22_HB$" jdbc-type="VARCHAR"/>
+  	    <field-descriptor name="SITE23_HB1" column="SITE23_HB1" jdbc-type="VARCHAR"/>
+  	    <field-descriptor name="SITE23_HB$" column="SITE23_HB$" jdbc-type="VARCHAR"/>
+  	    <field-descriptor name="SITE24_HB1" column="SITE24_HB1" jdbc-type="VARCHAR"/>
+  	    <field-descriptor name="SITE24_HB$" column="SITE24_HB$" jdbc-type="VARCHAR"/>
+  	    <field-descriptor name="SITE25_HB1" column="SITE25_HB1" jdbc-type="VARCHAR"/>
+  	    <field-descriptor name="SITE25_HB$" column="SITE25_HB$" jdbc-type="VARCHAR"/>
+  	    <field-descriptor name="SITE26_HB1" column="SITE26_HB1" jdbc-type="VARCHAR"/>
+  	    <field-descriptor name="SITE26_HB$" column="SITE26_HB$" jdbc-type="VARCHAR"/>
+  	    <field-descriptor name="SITE27_HB1" column="SITE27_HB1" jdbc-type="VARCHAR"/>
+  	    <field-descriptor name="SITE27_HB$" column="SITE27_HB$" jdbc-type="VARCHAR"/>
+  	    <field-descriptor name="SITE28_HB1" column="SITE28_HB1" jdbc-type="VARCHAR"/>
+  	    <field-descriptor name="SITE28_HB$" column="SITE28_HB$" jdbc-type="VARCHAR"/>
+  	    <field-descriptor name="SITE29_HB1" column="SITE29_HB1" jdbc-type="VARCHAR"/>
+  	    <field-descriptor name="SITE29_HB$" column="SITE29_HB$" jdbc-type="VARCHAR"/>
+  	    <field-descriptor name="SITE30_HB1" column="SITE30_HB1" jdbc-type="VARCHAR"/>
+  	    <field-descriptor name="SITE30_HB$" column="SITE30_HB$" jdbc-type="VARCHAR"/>
+  	    <field-descriptor name="SITE31_HB1" column="SITE31_HB1" jdbc-type="VARCHAR"/>
+  	    <field-descriptor name="SITE31_HB$" column="SITE31_HB$" jdbc-type="VARCHAR"/>
+  	    <field-descriptor name="COUNT" column="COUNT" jdbc-type="VARCHAR"/>  	    
+  	    <field-descriptor name="DURATION" column="DURATION" jdbc-type="VARCHAR"/>  	      	    
+  	    <field-descriptor name="SC_VERSION" column="SC_VERSION" jdbc-type="VARCHAR"/>  	      	      	    
+  	    <field-descriptor name="API_VERSION" column="API_VERSION" jdbc-type="VARCHAR"/>  	      	      	      	    
+  	    <field-descriptor name="ALARM_TIME" column="ALARM_TIME" jdbc-type="VARCHAR"/>
+  	    <field-descriptor name="VALIDATION_TIME" column="VALIDATION_TIME" jdbc-type="VARCHAR"/>  	      	      	    
+  	    <field-descriptor name="PROGRAM_LOAD_TIME" column="PROGRAM_LOAD_TIME" jdbc-type="VARCHAR"/>  	      	      	      	    
+        <field-descriptor name="JAM_NUMBER" column="JAM_NUMBER" jdbc-type="VARCHAR"/>  	    
+        <field-descriptor name="SETUP_SOURCE" column="SETUP_SOURCE" jdbc-type="VARCHAR"/>        
+        <field-descriptor name="FLOW_ID" column="FLOW_ID" jdbc-type="VARCHAR"/>       
+        <field-descriptor name="CRITICAL_JAM" column="CRITICAL_JAM" jdbc-type="VARCHAR"/>
+        <field-descriptor name="JAM_DESCRIPTION" column="JAM_DESCRIPTION" jdbc-type="VARCHAR"/>
+        <field-descriptor name="CREW" column="CREW" jdbc-type="VARCHAR"/>
+        <field-descriptor name="DEVICE_NAME" column="DEVICE_NAME" jdbc-type="VARCHAR"/>
+        <field-descriptor name="PRODUCT_LINE" column="PRODUCT_LINE" jdbc-type="VARCHAR"/>
+        <field-descriptor name="LOT_COUNT" column="LOT_COUNT" jdbc-type="VARCHAR"/>
+        <field-descriptor name="TOUCH_INCREMENT" column="TOUCH_INCREMENT" jdbc-type="VARCHAR"/>       
+        <field-descriptor name="NUMBER_POLISH" column="NUMBER_POLISH" jdbc-type="VARCHAR"/>
+        <field-descriptor name="WAFERS_PROCESSED" column="WAFERS_PROCESSED" jdbc-type="VARCHAR"/>
+        <field-descriptor name="REPROBE" column="REPROBE" jdbc-type="VARCHAR"/>
+        <field-descriptor name="PROBECARD_ID" column="PROBECARD_ID" jdbc-type="VARCHAR"/>
+        <field-descriptor name="PROBECARD_TYPE" column="PROBECARD_TYPE" jdbc-type="VARCHAR"/>
+        <field-descriptor name="COMMENTS" column="COMMENTS" jdbc-type="VARCHAR"/>
+        <field-descriptor name="WAFER_ID" column="WAFER_ID" jdbc-type="VARCHAR"/>
+        <field-descriptor name="PASS" column="PASS" jdbc-type="VARCHAR"/>
+        <field-descriptor name="SITE_DISABLED_RESPONSE_TIME" column="SITE_DISABLED_RESPONSE_TIME" jdbc-type="VARCHAR"/>
+		<field-descriptor name="SITE_DISABLED_DATE" column="SITE_DISABLED_DATE" jdbc-type="VARCHAR"/>
+		<field-descriptor name="SITE_DISABLED_BIN_NUM" column="SITE_DISABLED_BIN_NUM" jdbc-type="VARCHAR"/>
+		<field-descriptor name="SITE_DISABLED_BIN_TYPE" column="SITE_DISABLED_BIN_TYPE" jdbc-type="VARCHAR"/>
+		<field-descriptor name="SITE_DISABLED_FAIL_TYPE" column="SITE_DISABLED_FAIL_TYPE" jdbc-type="VARCHAR"/>
+		<field-descriptor name="SITE_DISABLED" column="SITE_DISABLED" jdbc-type="VARCHAR"/>
+		<field-descriptor name="SITE_DISABLED_REPAIR_TIME" column="SITE_DISABLED_REPAIR_TIME" jdbc-type="VARCHAR"/>
+		<field-descriptor name="LOT_TYPE" column="LOT_TYPE" jdbc-type="VARCHAR"/>
+		<field-descriptor name="TESTER_EXEC_VERSION" column="TESTER_EXEC_VERSION" jdbc-type="VARCHAR"/>
+		<field-descriptor name="PNP_SITES_AVAILABLE" column="PNP_SITES_AVAILABLE" jdbc-type="VARCHAR"/>
+		<field-descriptor name="PNP_B4_DISABLED" column="PNP_B4_DISABLED" jdbc-type="VARCHAR"/>
+		<field-descriptor name="PNP_B3_DISABLED" column="PNP_B3_DISABLED" jdbc-type="VARCHAR"/>
+		<field-descriptor name="PNP_B2_DISABLED" column="PNP_B2_DISABLED" jdbc-type="VARCHAR"/>
+		<field-descriptor name="PNP_B1_DISABLED" column="PNP_B1_DISABLED" jdbc-type="VARCHAR"/>
+		<field-descriptor name="PNP_A4_DISABLED" column="PNP_A4_DISABLED" jdbc-type="VARCHAR"/>
+		<field-descriptor name="PNP_A3_DISABLED" column="PNP_A3_DISABLED" jdbc-type="VARCHAR"/>
+		<field-descriptor name="PNP_A2_DISABLED" column="PNP_A2_DISABLED" jdbc-type="VARCHAR"/>
+		<field-descriptor name="PNP_A1_DISABLED" column="PNP_A1_DISABLED" jdbc-type="VARCHAR"/>
+		<field-descriptor name="LOADING_ERROR" column="LOADING_ERROR" jdbc-type="VARCHAR"/>
+		<field-descriptor name="SHAKER1_ID" column="SHAKER1_ID" jdbc-type="VARCHAR"/>
+		<field-descriptor name="SHAKER2_ID" column="SHAKER2_ID" jdbc-type="VARCHAR"/>
+		<field-descriptor name="IPNP_SITES_AVAILABLE" column="IPNP_SITES_AVAILABLE" jdbc-type="VARCHAR"/>
+		<field-descriptor name="IPNP_1_DISABLED" column="IPNP_1_DISABLED" jdbc-type="VARCHAR"/>
+		<field-descriptor name="IPNP_2_DISABLED" column="IPNP_2_DISABLED" jdbc-type="VARCHAR"/>
+		<field-descriptor name="IPNP_3_DISABLED" column="IPNP_3_DISABLED" jdbc-type="VARCHAR"/>
+		<field-descriptor name="IPNP_4_DISABLED" column="IPNP_4_DISABLED" jdbc-type="VARCHAR"/>
+		<field-descriptor name="IPNP_5_DISABLED" column="IPNP_5_DISABLED" jdbc-type="VARCHAR"/>
+		<field-descriptor name="IPNP_6_DISABLED" column="IPNP_6_DISABLED" jdbc-type="VARCHAR"/>
+		<field-descriptor name="IPNP_7_DISABLED" column="IPNP_7_DISABLED" jdbc-type="VARCHAR"/>
+		<field-descriptor name="IPNP_8_DISABLED" column="IPNP_8_DISABLED" jdbc-type="VARCHAR"/>
+		<field-descriptor name="OPNP_SITES_AVAILABLE" column="OPNP_SITES_AVAILABLE" jdbc-type="VARCHAR"/>
+		<field-descriptor name="OPNP_A1_DISABLED" column="OPNP_A1_DISABLED" jdbc-type="VARCHAR"/>
+		<field-descriptor name="OPNP_A2_DISABLED" column="OPNP_A2_DISABLED" jdbc-type="VARCHAR"/>
+		<field-descriptor name="OPNP_A3_DISABLED" column="OPNP_A3_DISABLED" jdbc-type="VARCHAR"/>
+		<field-descriptor name="OPNP_A4_DISABLED" column="OPNP_A4_DISABLED" jdbc-type="VARCHAR"/>
+		<field-descriptor name="OPNP_B1_DISABLED" column="OPNP_B1_DISABLED" jdbc-type="VARCHAR"/>
+		<field-descriptor name="OPNP_B2_DISABLED" column="OPNP_B2_DISABLED" jdbc-type="VARCHAR"/>
+		<field-descriptor name="OPNP_B3_DISABLED" column="OPNP_B3_DISABLED" jdbc-type="VARCHAR"/>
+		<field-descriptor name="OPNP_B4_DISABLED" column="OPNP_B4_DISABLED" jdbc-type="VARCHAR"/>
+		<field-descriptor name="TPNP_SITES_AVAILABLE" column="TPNP_SITES_AVAILABLE" jdbc-type="VARCHAR"/>
+		<field-descriptor name="TPNP_A1_DISABLED" column="TPNP_A1_DISABLED" jdbc-type="VARCHAR"/>
+		<field-descriptor name="TPNP_A2_DISABLED" column="TPNP_A2_DISABLED" jdbc-type="VARCHAR"/>
+		<field-descriptor name="TPNP_A3_DISABLED" column="TPNP_A3_DISABLED" jdbc-type="VARCHAR"/>
+		<field-descriptor name="TPNP_A4_DISABLED" column="TPNP_A4_DISABLED" jdbc-type="VARCHAR"/>
+		<field-descriptor name="TPNP_B1_DISABLED" column="TPNP_B1_DISABLED" jdbc-type="VARCHAR"/>
+		<field-descriptor name="TPNP_B2_DISABLED" column="TPNP_B2_DISABLED" jdbc-type="VARCHAR"/>
+		<field-descriptor name="TPNP_B3_DISABLED" column="TPNP_B3_DISABLED" jdbc-type="VARCHAR"/>
+		<field-descriptor name="TPNP_B4_DISABLED" column="TPNP_B4_DISABLED" jdbc-type="VARCHAR"/>
+		<field-descriptor name="JRE_VERSION" column="JRE_VERSION" jdbc-type="VARCHAR"/>
+		<field-descriptor name="shift" column="SHIFT" jdbc-type="VARCHAR"/>
+		<field-descriptor name="day" column="DAY" jdbc-type="VARCHAR"/>
+		<field-descriptor name="week" column="WEEK" jdbc-type="VARCHAR"/>
+		<field-descriptor name="month" column="MONTH" jdbc-type="VARCHAR"/>
+		<field-descriptor name="STEP_NAME" column="STEP_NAME" jdbc-type="VARCHAR"/>		
+		<field-descriptor name="PSEQ_NUMBER" column="PSEQ_NUMBER" jdbc-type="VARCHAR"/>
+		<field-descriptor name="PROC_NAME" column="PROC_NAME" jdbc-type="VARCHAR"/>
+		<field-descriptor name="SITE0_HB8" column="SITE0_HB8" jdbc-type="VARCHAR"/>
+		<field-descriptor name="SITE1_HB8" column="SITE1_HB8" jdbc-type="VARCHAR"/>
+		<field-descriptor name="SITE2_HB8" column="SITE2_HB8" jdbc-type="VARCHAR"/>
+		<field-descriptor name="SITE3_HB8" column="SITE3_HB8" jdbc-type="VARCHAR"/>
+		<field-descriptor name="SITE4_HB8" column="SITE4_HB8" jdbc-type="VARCHAR"/>
+		<field-descriptor name="SITE5_HB8" column="SITE5_HB8" jdbc-type="VARCHAR"/>
+		<field-descriptor name="SITE6_HB8" column="SITE6_HB8" jdbc-type="VARCHAR"/>
+		<field-descriptor name="SITE7_HB8" column="SITE7_HB8" jdbc-type="VARCHAR"/>
+		<field-descriptor name="SITE8_HB8" column="SITE8_HB8" jdbc-type="VARCHAR"/>
+		<field-descriptor name="SITE9_HB8" column="SITE9_HB8" jdbc-type="VARCHAR"/>
+		<field-descriptor name="SITE10_HB8" column="SITE10_HB8" jdbc-type="VARCHAR"/>
+		<field-descriptor name="SITE11_HB8" column="SITE11_HB8" jdbc-type="VARCHAR"/>
+		<field-descriptor name="SITE12_HB8" column="SITE12_HB8" jdbc-type="VARCHAR"/>
+		<field-descriptor name="SITE13_HB8" column="SITE13_HB8" jdbc-type="VARCHAR"/>
+		<field-descriptor name="SITE14_HB8" column="SITE14_HB8" jdbc-type="VARCHAR"/>
+		<field-descriptor name="SITE15_HB8" column="SITE15_HB8" jdbc-type="VARCHAR"/>
+		<field-descriptor name="SITE16_HB8" column="SITE16_HB8" jdbc-type="VARCHAR"/>
+		<field-descriptor name="SITE17_HB8" column="SITE17_HB8" jdbc-type="VARCHAR"/>
+		<field-descriptor name="SITE18_HB8" column="SITE18_HB8" jdbc-type="VARCHAR"/>
+		<field-descriptor name="SITE19_HB8" column="SITE19_HB8" jdbc-type="VARCHAR"/>
+		<field-descriptor name="SITE20_HB8" column="SITE20_HB8" jdbc-type="VARCHAR"/>
+		<field-descriptor name="SITE21_HB8" column="SITE21_HB8" jdbc-type="VARCHAR"/>
+		<field-descriptor name="SITE22_HB8" column="SITE22_HB8" jdbc-type="VARCHAR"/>
+		<field-descriptor name="SITE23_HB8" column="SITE23_HB8" jdbc-type="VARCHAR"/>
+		<field-descriptor name="SITE24_HB8" column="SITE24_HB8" jdbc-type="VARCHAR"/>
+		<field-descriptor name="SITE25_HB8" column="SITE25_HB8" jdbc-type="VARCHAR"/>
+		<field-descriptor name="SITE26_HB8" column="SITE26_HB8" jdbc-type="VARCHAR"/>
+		<field-descriptor name="SITE27_HB8" column="SITE27_HB8" jdbc-type="VARCHAR"/>
+		<field-descriptor name="SITE28_HB8" column="SITE28_HB8" jdbc-type="VARCHAR"/>
+		<field-descriptor name="SITE29_HB8" column="SITE29_HB8" jdbc-type="VARCHAR"/>
+		<field-descriptor name="SITE30_HB8" column="SITE30_HB8" jdbc-type="VARCHAR"/>
+		<field-descriptor name="SITE31_HB8" column="SITE31_HB8" jdbc-type="VARCHAR"/>
+</class-descriptor>
+
+	<class-descriptor class="com.freescale.stateStamper.model.entity.DurableStatus" table="DURABLE_STATUS">
+		<field-descriptor name="STATUS_PK" column="STATUS_PK" jdbc-type="INTEGER" primarykey="true" autoincrement="true" sequence-name="DURABLE_STATUS_SEQ"/>
+		<field-descriptor name="DURABLE_ID" column="DURABLE_ID" jdbc-type="VARCHAR"/>
+		<field-descriptor name="TIME" column="TIME" jdbc-type="VARCHAR"/>
+		<field-descriptor name="STATE" column="STATE" jdbc-type="VARCHAR"/>
+		<field-descriptor name="ATTRIBUTES" column="ATTRIBUTES" jdbc-type="VARCHAR" conversion="com.freescale.stateStamper.db.Map2Json"/>
+		<field-descriptor name="SUBSTATE" column="SUBSTATE" jdbc-type="VARCHAR"/>
+		<field-descriptor name="OPERATOR_ID" column="OPERATOR_ID" jdbc-type="VARCHAR"/>
+		<field-descriptor name="EQUIPMENT_PK" column="EQUIPMENT_PK" jdbc-type="INTEGER"/>
+		<field-descriptor name="EVENT_PK" column="EVENT_PK" jdbc-type="INTEGER"/>   	
+		<field-descriptor name="COMMENTS" column="COMMENTS" jdbc-type="VARCHAR" conversion="com.freescale.stateStamper.db.Map2Json"/>
+		<field-descriptor name="workstation" column="WORKSTATION" jdbc-type="VARCHAR"/>   	
+		<field-descriptor name="location" column="LOCATION" jdbc-type="VARCHAR"/>
+		<field-descriptor name="duration" column="DURATION" jdbc-type="VARCHAR"/>
+	</class-descriptor>	
+	<class-descriptor class="com.freescale.stateStamper.model.entity.CurrentDurableStatus" table="DURABLE_STATUS_V">
+		<field-descriptor name="STATUS_PK" column="STATUS_PK" jdbc-type="INTEGER" primarykey="true" autoincrement="true" sequence-name="DURABLE_STATUS_SEQ"/>
+		<field-descriptor name="DURABLE_ID" column="DURABLE_ID" jdbc-type="VARCHAR"/>
+		<field-descriptor name="TIME" column="TIME" jdbc-type="VARCHAR"/>
+		<field-descriptor name="STATE" column="STATE" jdbc-type="VARCHAR"/>
+		<field-descriptor name="SUBSTATE" column="SUBSTATE" jdbc-type="VARCHAR"/>
+		<field-descriptor name="OPERATOR_ID" column="OPERATOR_ID" jdbc-type="VARCHAR"/>
+		<field-descriptor name="EQUIPMENT_PK" column="EQUIPMENT_PK" jdbc-type="INTEGER"/>
+		<field-descriptor name="EVENT_PK" column="EVENT_PK" jdbc-type="INTEGER"/>  			
+		<field-descriptor name="eIName" column="EQUIPMENT_NAME" jdbc-type="VARCHAR"/>
+		<field-descriptor name="mESName" column="MES_NAME" jdbc-type="VARCHAR"/>
+		<field-descriptor name="type" column="CLASS" jdbc-type="VARCHAR"/>
+		<field-descriptor name="location" column="LOCATION" jdbc-type="VARCHAR"/>
+		<field-descriptor name="equipmentType_pk" column="EQUIPMENT_TYPE_PK" jdbc-type="INTEGER"/>
+		<field-descriptor name="serial_number" column="SERIAL_NUMBER" jdbc-type="VARCHAR"/>
+		<field-descriptor name="engineer_contact" column="ENGINEER_CONTACT" jdbc-type="VARCHAR"/>
+		<field-descriptor name="vendor" column="VENDOR" jdbc-type="VARCHAR"/>
+		<field-descriptor name="workstation" column="WORKSTATION" jdbc-type="VARCHAR"/>	
+		<field-descriptor name="area_pk" column="AREA_PK" jdbc-type="INTEGER"/>		  
+		<field-descriptor name="platform" column="PLATFORM" jdbc-type="VARCHAR"/>
+		<field-descriptor name="deviceGroup" column="DEVICE_GROUP" jdbc-type="VARCHAR"/>		
+		<field-descriptor name="COMMENTS" column="COMMENTS" jdbc-type="VARCHAR" conversion="com.freescale.stateStamper.db.Map2Json"/>
+		<field-descriptor name="ATTRIBUTES" column="ATTRIBUTES" jdbc-type="VARCHAR" conversion="com.freescale.stateStamper.db.Map2Json"/>		   			
+		<field-descriptor name="dynamicAttributes" column="DYNAMIC_ATTRIBUTES" jdbc-type="VARCHAR" conversion="com.freescale.stateStamper.db.Map2Json"/>
+		<field-descriptor name="children" column="CHILDREN" jdbc-type="VARCHAR" conversion="com.freescale.stateStamper.db.Map2Json"/>
+	</class-descriptor>
+
+
+	<class-descriptor class="com.freescale.stateStamper.model.entity.Location" table="LOCATION">
+		<field-descriptor name="locationPk" column="LOCATION_PK" jdbc-type="INTEGER" primarykey="true" autoincrement="true" sequence-name="LOCATION_SEQ"/>
+		<field-descriptor name="name" column="NAME" jdbc-type="VARCHAR"/>
+		<field-descriptor name="capacity" column="CAPACITY" jdbc-type="INTEGER"/>
+		<field-descriptor name="count" column="COUNT" jdbc-type="INTEGER"/>		
+		<field-descriptor name="components" column="COMPONENTS" jdbc-type="VARCHAR" conversion="com.freescale.stateStamper.db.Map2Json"/>		
+	</class-descriptor>
+
+
+	<class-descriptor class="com.freescale.stateStamper.model.entity.Attachment" table="ATTACHMENT">
+		<field-descriptor name="attachmentPk" column="ATTACHMENT_PK" jdbc-type="INTEGER" primarykey="true" autoincrement="true" sequence-name="ATTACHMENT_SEQ"/>	
+		<field-descriptor name="statusPk" column="STATUS_PK" jdbc-type="INTEGER"/>
+		<field-descriptor name="equipmentPk" column="EQUIPMENT_PK" jdbc-type="INTEGER"/>
+		<field-descriptor name="displayFilename" column="DISPLAY_FILE_NAME" jdbc-type="VARCHAR"/>		
+		<field-descriptor name="fileLocation" column="FILE_LOCATION" jdbc-type="VARCHAR"/>	
+		<field-descriptor name="time" column="TIME" jdbc-type="VARCHAR"/>	
+		<field-descriptor name="type" column="TYPE" jdbc-type="VARCHAR"/>
+		<reference-descriptor name="status" class-ref="com.freescale.stateStamper.model.entity.DurableStatus" auto-retrieve="true" auto-update="false" auto-delete="false" >
+		   <foreignkey field-ref="statusPk"/>
+		</reference-descriptor>	
+	</class-descriptor>
+
+	<class-descriptor class="com.freescale.stateStamper.model.entity.CurrentStatus" table="CURRENT_STATUS_V">
+		<field-descriptor name="STATUS_PK" column="STATUS_PK" jdbc-type="INTEGER" primarykey="true" autoincrement="true" sequence-name="STATUS_SEQ"/>
+		<field-descriptor name="EQUIPMENT_PK" column="EQUIPMENT_PK" jdbc-type="INTEGER"/>
+		<field-descriptor name="MID" column="MID" jdbc-type="VARCHAR"/>
+		<field-descriptor name="TIME" column="TIME" jdbc-type="VARCHAR"/>
+		<field-descriptor name="PERIOD" column="PERIOD" jdbc-type="VARCHAR"/>	
+		<field-descriptor name="STATE" column="STATE" jdbc-type="VARCHAR"/>	
+		<field-descriptor name="SUBSTATE" column="SUBSTATE" jdbc-type="VARCHAR"/>		
+		<field-descriptor name="LOT_ID" column="LOT_ID" jdbc-type="VARCHAR"/>
+		<field-descriptor name="DEVICE_ID" column="DEVICE_ID" jdbc-type="VARCHAR"/>										
+		<field-descriptor name="TEST_PROGRAM" column="TEST_PROGRAM" jdbc-type="VARCHAR"/>												
+		<field-descriptor name="TEMPERATURE" column="TEMPERATURE" jdbc-type="VARCHAR"/>												
+		<field-descriptor name="INSERTIONS" column="INSERTIONS" jdbc-type="VARCHAR"/>
+		<field-descriptor name="RESCREEN" column="RESCREEN" jdbc-type="VARCHAR"/>
+		<field-descriptor name="HANDLER_ID" column="HANDLER_ID" jdbc-type="VARCHAR"/>
+		<field-descriptor name="SITES_AVAILABLE" column="SITES_AVAILABLE" jdbc-type="VARCHAR"/>
+		<field-descriptor name="LOADBOARD_ID" column="LOADBOARD_ID" jdbc-type="VARCHAR"/>		
+		<field-descriptor name="OPERATOR_ID" column="OPERATOR_ID" jdbc-type="VARCHAR"/>				
+		<field-descriptor name="DEVICES_PROCESSED" column="DEVICES_PROCESSED" jdbc-type="VARCHAR"/>				
+		<field-descriptor name="RETEST" column="RETEST" jdbc-type="VARCHAR"/>						
+		<field-descriptor name="CNT_GOOD" column="CNT_GOOD" jdbc-type="VARCHAR"/>						
+  	    <field-descriptor name="TEST_TIME" column="TEST_TIME" jdbc-type="VARCHAR"/>	
+  	    <field-descriptor name="HND_INDEX_TIME" column="HND_INDEX_TIME" jdbc-type="VARCHAR"/>	
+  	    <field-descriptor name="SITE0_HB1" column="SITE0_HB1" jdbc-type="VARCHAR"/>
+  	    <field-descriptor name="SITE0_HB$" column="SITE0_HB$" jdbc-type="VARCHAR"/>
+  	    <field-descriptor name="SITE1_HB1" column="SITE1_HB1" jdbc-type="VARCHAR"/>
+  	    <field-descriptor name="SITE1_HB$" column="SITE1_HB$" jdbc-type="VARCHAR"/>
+  	    <field-descriptor name="SITE2_HB1" column="SITE2_HB1" jdbc-type="VARCHAR"/>
+  	    <field-descriptor name="SITE2_HB$" column="SITE2_HB$" jdbc-type="VARCHAR"/>
+  	    <field-descriptor name="SITE3_HB1" column="SITE3_HB1" jdbc-type="VARCHAR"/>
+  	    <field-descriptor name="SITE3_HB$" column="SITE3_HB$" jdbc-type="VARCHAR"/>
+  	    <field-descriptor name="SITE4_HB1" column="SITE4_HB1" jdbc-type="VARCHAR"/>
+  	    <field-descriptor name="SITE4_HB$" column="SITE4_HB$" jdbc-type="VARCHAR"/>
+  	    <field-descriptor name="SITE5_HB1" column="SITE5_HB1" jdbc-type="VARCHAR"/>
+  	    <field-descriptor name="SITE5_HB$" column="SITE5_HB$" jdbc-type="VARCHAR"/>
+  	    <field-descriptor name="SITE6_HB1" column="SITE6_HB1" jdbc-type="VARCHAR"/>
+  	    <field-descriptor name="SITE6_HB$" column="SITE6_HB$" jdbc-type="VARCHAR"/>
+  	    <field-descriptor name="SITE7_HB1" column="SITE7_HB1" jdbc-type="VARCHAR"/>
+  	    <field-descriptor name="SITE7_HB$" column="SITE7_HB$" jdbc-type="VARCHAR"/>
+  	    <field-descriptor name="SITE8_HB1" column="SITE8_HB1" jdbc-type="VARCHAR"/>
+  	    <field-descriptor name="SITE8_HB$" column="SITE8_HB$" jdbc-type="VARCHAR"/>
+  	    <field-descriptor name="SITE9_HB1" column="SITE9_HB1" jdbc-type="VARCHAR"/>
+  	    <field-descriptor name="SITE9_HB$" column="SITE9_HB$" jdbc-type="VARCHAR"/>
+  	    <field-descriptor name="SITE10_HB1" column="SITE10_HB1" jdbc-type="VARCHAR"/>
+  	    <field-descriptor name="SITE10_HB$" column="SITE10_HB$" jdbc-type="VARCHAR"/>
+  	    <field-descriptor name="SITE11_HB1" column="SITE11_HB1" jdbc-type="VARCHAR"/>
+  	    <field-descriptor name="SITE11_HB$" column="SITE11_HB$" jdbc-type="VARCHAR"/>
+  	    <field-descriptor name="SITE12_HB1" column="SITE12_HB1" jdbc-type="VARCHAR"/>
+  	    <field-descriptor name="SITE12_HB$" column="SITE12_HB$" jdbc-type="VARCHAR"/>
+  	    <field-descriptor name="SITE13_HB1" column="SITE13_HB1" jdbc-type="VARCHAR"/>
+  	    <field-descriptor name="SITE13_HB$" column="SITE13_HB$" jdbc-type="VARCHAR"/>
+  	    <field-descriptor name="SITE14_HB1" column="SITE14_HB1" jdbc-type="VARCHAR"/>
+  	    <field-descriptor name="SITE14_HB$" column="SITE14_HB$" jdbc-type="VARCHAR"/>
+  	    <field-descriptor name="SITE15_HB1" column="SITE15_HB1" jdbc-type="VARCHAR"/>
+  	    <field-descriptor name="SITE15_HB$" column="SITE15_HB$" jdbc-type="VARCHAR"/>
+  	    <field-descriptor name="SITE16_HB1" column="SITE16_HB1" jdbc-type="VARCHAR"/>
+  	    <field-descriptor name="SITE16_HB$" column="SITE16_HB$" jdbc-type="VARCHAR"/>
+  	    <field-descriptor name="SITE17_HB1" column="SITE17_HB1" jdbc-type="VARCHAR"/>
+  	    <field-descriptor name="SITE17_HB$" column="SITE17_HB$" jdbc-type="VARCHAR"/>
+  	    <field-descriptor name="SITE18_HB1" column="SITE18_HB1" jdbc-type="VARCHAR"/>
+  	    <field-descriptor name="SITE18_HB$" column="SITE18_HB$" jdbc-type="VARCHAR"/>
+  	    <field-descriptor name="SITE19_HB1" column="SITE19_HB1" jdbc-type="VARCHAR"/>
+  	    <field-descriptor name="SITE19_HB$" column="SITE19_HB$" jdbc-type="VARCHAR"/>
+  	    <field-descriptor name="SITE20_HB1" column="SITE20_HB1" jdbc-type="VARCHAR"/>
+  	    <field-descriptor name="SITE20_HB$" column="SITE20_HB$" jdbc-type="VARCHAR"/>
+  	    <field-descriptor name="SITE21_HB1" column="SITE21_HB1" jdbc-type="VARCHAR"/>
+  	    <field-descriptor name="SITE21_HB$" column="SITE21_HB$" jdbc-type="VARCHAR"/>
+  	    <field-descriptor name="SITE22_HB1" column="SITE22_HB1" jdbc-type="VARCHAR"/>
+  	    <field-descriptor name="SITE22_HB$" column="SITE22_HB$" jdbc-type="VARCHAR"/>
+  	    <field-descriptor name="SITE23_HB1" column="SITE23_HB1" jdbc-type="VARCHAR"/>
+  	    <field-descriptor name="SITE23_HB$" column="SITE23_HB$" jdbc-type="VARCHAR"/>
+  	    <field-descriptor name="SITE24_HB1" column="SITE24_HB1" jdbc-type="VARCHAR"/>
+  	    <field-descriptor name="SITE24_HB$" column="SITE24_HB$" jdbc-type="VARCHAR"/>
+  	    <field-descriptor name="SITE25_HB1" column="SITE25_HB1" jdbc-type="VARCHAR"/>
+  	    <field-descriptor name="SITE25_HB$" column="SITE25_HB$" jdbc-type="VARCHAR"/>
+  	    <field-descriptor name="SITE26_HB1" column="SITE26_HB1" jdbc-type="VARCHAR"/>
+  	    <field-descriptor name="SITE26_HB$" column="SITE26_HB$" jdbc-type="VARCHAR"/>
+  	    <field-descriptor name="SITE27_HB1" column="SITE27_HB1" jdbc-type="VARCHAR"/>
+  	    <field-descriptor name="SITE27_HB$" column="SITE27_HB$" jdbc-type="VARCHAR"/>
+  	    <field-descriptor name="SITE28_HB1" column="SITE28_HB1" jdbc-type="VARCHAR"/>
+  	    <field-descriptor name="SITE28_HB$" column="SITE28_HB$" jdbc-type="VARCHAR"/>
+  	    <field-descriptor name="SITE29_HB1" column="SITE29_HB1" jdbc-type="VARCHAR"/>
+  	    <field-descriptor name="SITE29_HB$" column="SITE29_HB$" jdbc-type="VARCHAR"/>
+  	    <field-descriptor name="SITE30_HB1" column="SITE30_HB1" jdbc-type="VARCHAR"/>
+  	    <field-descriptor name="SITE30_HB$" column="SITE30_HB$" jdbc-type="VARCHAR"/>
+  	    <field-descriptor name="SITE31_HB1" column="SITE31_HB1" jdbc-type="VARCHAR"/>
+  	    <field-descriptor name="SITE31_HB$" column="SITE31_HB$" jdbc-type="VARCHAR"/>
+  	    <field-descriptor name="COUNT" column="COUNT" jdbc-type="VARCHAR"/>  	    
+  	    <field-descriptor name="DURATION" column="DURATION" jdbc-type="VARCHAR"/>  	      	    
+  	    <field-descriptor name="SC_VERSION" column="SC_VERSION" jdbc-type="VARCHAR"/>  	      	      	    
+  	    <field-descriptor name="API_VERSION" column="API_VERSION" jdbc-type="VARCHAR"/>  	      	      	      	    
+  	    <field-descriptor name="GOOD_TEST_TIME" column="GOOD_TEST_TIME" jdbc-type="VARCHAR"/>  	    
+  	    <field-descriptor name="GOOD_SYSTEM_INDEX_TIME" column="GOOD_SYSTEM_INDEX_TIME" jdbc-type="VARCHAR"/>  	    
+  	    <field-descriptor name="ALARM_TIME" column="ALARM_TIME" jdbc-type="VARCHAR"/>
+  	    <field-descriptor name="VALIDATION_TIME" column="VALIDATION_TIME" jdbc-type="VARCHAR"/>  	      	      	    
+  	    <field-descriptor name="PROGRAM_LOAD_TIME" column="PROGRAM_LOAD_TIME" jdbc-type="VARCHAR"/>  	      	      	      	    
+        <field-descriptor name="JAM_NUMBER" column="JAM_NUMBER" jdbc-type="VARCHAR"/>  	    
+        <field-descriptor name="SETUP_SOURCE" column="SETUP_SOURCE" jdbc-type="VARCHAR"/>        
+        <field-descriptor name="FLOW_ID" column="FLOW_ID" jdbc-type="VARCHAR"/>       
+        <field-descriptor name="CRITICAL_JAM" column="CRITICAL_JAM" jdbc-type="VARCHAR"/>
+        <field-descriptor name="JAM_DESCRIPTION" column="JAM_DESCRIPTION" jdbc-type="VARCHAR"/>
+        <field-descriptor name="CREW" column="CREW" jdbc-type="VARCHAR"/>
+        <field-descriptor name="DEVICE_NAME" column="DEVICE_NAME" jdbc-type="VARCHAR"/>
+        <field-descriptor name="PRODUCT_LINE" column="PRODUCT_LINE" jdbc-type="VARCHAR"/>
+        <field-descriptor name="LOT_COUNT" column="LOT_COUNT" jdbc-type="VARCHAR"/>
+        <field-descriptor name="TOUCH_INCREMENT" column="TOUCH_INCREMENT" jdbc-type="VARCHAR"/>       
+        <field-descriptor name="NUMBER_POLISH" column="NUMBER_POLISH" jdbc-type="VARCHAR"/>
+        <field-descriptor name="WAFERS_PROCESSED" column="WAFERS_PROCESSED" jdbc-type="VARCHAR"/>
+        <field-descriptor name="REPROBE" column="REPROBE" jdbc-type="VARCHAR"/>
+        <field-descriptor name="PROBECARD_ID" column="PROBECARD_ID" jdbc-type="VARCHAR"/>
+        <field-descriptor name="PROBECARD_TYPE" column="PROBECARD_TYPE" jdbc-type="VARCHAR"/>
+        <field-descriptor name="COMMENTS" column="COMMENTS" jdbc-type="VARCHAR"/>
+        <field-descriptor name="WAFER_ID" column="WAFER_ID" jdbc-type="VARCHAR"/>
+        <field-descriptor name="PASS" column="PASS" jdbc-type="VARCHAR"/>
+        <field-descriptor name="SITE_DISABLED_RESPONSE_TIME" column="SITE_DISABLED_RESPONSE_TIME" jdbc-type="VARCHAR"/>
+		<field-descriptor name="SITE_DISABLED_DATE" column="SITE_DISABLED_DATE" jdbc-type="VARCHAR"/>
+		<field-descriptor name="SITE_DISABLED_BIN_NUM" column="SITE_DISABLED_BIN_NUM" jdbc-type="VARCHAR"/>
+		<field-descriptor name="SITE_DISABLED_BIN_TYPE" column="SITE_DISABLED_BIN_TYPE" jdbc-type="VARCHAR"/>
+		<field-descriptor name="SITE_DISABLED_FAIL_TYPE" column="SITE_DISABLED_FAIL_TYPE" jdbc-type="VARCHAR"/>
+		<field-descriptor name="SITE_DISABLED" column="SITE_DISABLED" jdbc-type="VARCHAR"/>
+		<field-descriptor name="SITE_DISABLED_REPAIR_TIME" column="SITE_DISABLED_REPAIR_TIME" jdbc-type="VARCHAR"/>
+		<field-descriptor name="LOT_TYPE" column="LOT_TYPE" jdbc-type="VARCHAR"/>
+		<field-descriptor name="TESTER_EXEC_VERSION" column="TESTER_EXEC_VERSION" jdbc-type="VARCHAR"/>		
+		<field-descriptor name="PNP_SITES_AVAILABLE" column="PNP_SITES_AVAILABLE" jdbc-type="VARCHAR"/>
+		<field-descriptor name="PNP_B4_DISABLED" column="PNP_B4_DISABLED" jdbc-type="VARCHAR"/>
+		<field-descriptor name="PNP_B3_DISABLED" column="PNP_B3_DISABLED" jdbc-type="VARCHAR"/>
+		<field-descriptor name="PNP_B2_DISABLED" column="PNP_B2_DISABLED" jdbc-type="VARCHAR"/>
+		<field-descriptor name="PNP_B1_DISABLED" column="PNP_B1_DISABLED" jdbc-type="VARCHAR"/>
+		<field-descriptor name="PNP_A4_DISABLED" column="PNP_A4_DISABLED" jdbc-type="VARCHAR"/>
+		<field-descriptor name="PNP_A3_DISABLED" column="PNP_A3_DISABLED" jdbc-type="VARCHAR"/>
+		<field-descriptor name="PNP_A2_DISABLED" column="PNP_A2_DISABLED" jdbc-type="VARCHAR"/>
+		<field-descriptor name="PNP_A1_DISABLED" column="PNP_A1_DISABLED" jdbc-type="VARCHAR"/>
+		<field-descriptor name="LOADING_ERROR" column="LOADING_ERROR" jdbc-type="VARCHAR"/>
+		<field-descriptor name="SHAKER1_ID" column="SHAKER1_ID" jdbc-type="VARCHAR"/>
+		<field-descriptor name="SHAKER2_ID" column="SHAKER2_ID" jdbc-type="VARCHAR"/>
+        <field-descriptor name="STEP_NAME" column="STEP_NAME" jdbc-type="VARCHAR"/>		
+		<field-descriptor name="PSEQ_NUMBER" column="PSEQ_NUMBER" jdbc-type="VARCHAR"/>
+		<field-descriptor name="PROC_NAME" column="PROC_NAME" jdbc-type="VARCHAR"/>
+		<field-descriptor name="SITE0_HB8" column="SITE0_HB8" jdbc-type="VARCHAR"/>
+		<field-descriptor name="SITE1_HB8" column="SITE1_HB8" jdbc-type="VARCHAR"/>
+		<field-descriptor name="SITE2_HB8" column="SITE2_HB8" jdbc-type="VARCHAR"/>
+		<field-descriptor name="SITE3_HB8" column="SITE3_HB8" jdbc-type="VARCHAR"/>
+		<field-descriptor name="SITE4_HB8" column="SITE4_HB8" jdbc-type="VARCHAR"/>
+		<field-descriptor name="SITE5_HB8" column="SITE5_HB8" jdbc-type="VARCHAR"/>
+		<field-descriptor name="SITE6_HB8" column="SITE6_HB8" jdbc-type="VARCHAR"/>
+		<field-descriptor name="SITE7_HB8" column="SITE7_HB8" jdbc-type="VARCHAR"/>
+		<field-descriptor name="SITE8_HB8" column="SITE8_HB8" jdbc-type="VARCHAR"/>
+		<field-descriptor name="SITE9_HB8" column="SITE9_HB8" jdbc-type="VARCHAR"/>
+		<field-descriptor name="SITE10_HB8" column="SITE10_HB8" jdbc-type="VARCHAR"/>
+		<field-descriptor name="SITE11_HB8" column="SITE11_HB8" jdbc-type="VARCHAR"/>
+		<field-descriptor name="SITE12_HB8" column="SITE12_HB8" jdbc-type="VARCHAR"/>
+		<field-descriptor name="SITE13_HB8" column="SITE13_HB8" jdbc-type="VARCHAR"/>
+		<field-descriptor name="SITE14_HB8" column="SITE14_HB8" jdbc-type="VARCHAR"/>
+		<field-descriptor name="SITE15_HB8" column="SITE15_HB8" jdbc-type="VARCHAR"/>
+		<field-descriptor name="SITE16_HB8" column="SITE16_HB8" jdbc-type="VARCHAR"/>
+		<field-descriptor name="SITE17_HB8" column="SITE17_HB8" jdbc-type="VARCHAR"/>
+		<field-descriptor name="SITE18_HB8" column="SITE18_HB8" jdbc-type="VARCHAR"/>
+		<field-descriptor name="SITE19_HB8" column="SITE19_HB8" jdbc-type="VARCHAR"/>
+		<field-descriptor name="SITE20_HB8" column="SITE20_HB8" jdbc-type="VARCHAR"/>
+		<field-descriptor name="SITE21_HB8" column="SITE21_HB8" jdbc-type="VARCHAR"/>
+		<field-descriptor name="SITE22_HB8" column="SITE22_HB8" jdbc-type="VARCHAR"/>
+		<field-descriptor name="SITE23_HB8" column="SITE23_HB8" jdbc-type="VARCHAR"/>
+		<field-descriptor name="SITE24_HB8" column="SITE24_HB8" jdbc-type="VARCHAR"/>
+		<field-descriptor name="SITE25_HB8" column="SITE25_HB8" jdbc-type="VARCHAR"/>
+		<field-descriptor name="SITE26_HB8" column="SITE26_HB8" jdbc-type="VARCHAR"/>
+		<field-descriptor name="SITE27_HB8" column="SITE27_HB8" jdbc-type="VARCHAR"/>
+		<field-descriptor name="SITE28_HB8" column="SITE28_HB8" jdbc-type="VARCHAR"/>
+		<field-descriptor name="SITE29_HB8" column="SITE29_HB8" jdbc-type="VARCHAR"/>
+		<field-descriptor name="SITE30_HB8" column="SITE30_HB8" jdbc-type="VARCHAR"/>
+		<field-descriptor name="SITE31_HB8" column="SITE31_HB8" jdbc-type="VARCHAR"/>
+</class-descriptor>
+	<class-descriptor class="com.freescale.stateStamper.model.entity.Area" table="AREA">
+		<field-descriptor name="primaryKey" column="AREA_PK" jdbc-type="INTEGER" primarykey="true" autoincrement="true" sequence-name="AREA_SEQ"/>
+		<field-descriptor name="name" column="NAME" jdbc-type="VARCHAR"/>
+	</class-descriptor>
+    <!-- include mappings for JUnit tests -->
+    <!-- This could be removed (with <!ENTITY entry),
+         if junit test suite was not used
+    &junit;
+    &junit_odmg;
+    &junit_otm;
+    &junit_ref;
+    &junit_meta_seq;
+    &junit_cache;
+    &junit_model;
+    &junit_cloneable;
+    &junit_inheritance;
+    &junit_pathClass;
+    -->
+    
+    <!-- include mappings for the EJB-examples -->
+    <!-- &ejb; -->
+</descriptor-repository>

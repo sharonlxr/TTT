@@ -1,0 +1,98 @@
+<html>
+<body>
+<h1>Model Management</h1>
+<p>Since release 4.6 version onwards TTT includes a model management module, it allows user to manage durable models. Model is the prototype of durables, it defines a list of attribute values and all the durables that belong to this model will inherit the values. The durables with the same model will share the same attribute values. <br/>
+</p>
+<h2>Setup configurations</h2>
+<h3>Business rule configuration</h3>
+<p>
+The "Model Configuration" event has been added to setup the business rule for model management.
+More details on the busines rule setup are in the <a href="user_guide_durable_management_admin.html#business_rules" target="_self"> Durable Management Administration - Business rule section</a>.</p>
+<img src="model_management_files/br.jpg"  /><br/><br/>
+<img src="model_management_files/rules.jpg"  /><br/>
+<h3>Status Explanation</h3>
+<table border="1" cellpadding="0" cellspacing="0" width="75%">
+	<tr>
+		<th bgcolor="#85A6E6" >
+		<font color="white">Approval Process Type</font><br/>
+		</th>
+		<th bgcolor="#85A6E6" >
+		<font color="white">Model Status</font><br/>
+		</th>
+		<th bgcolor="#85A6E6">
+		<font color="white">Available Actions</font><br/>
+		</th>
+	</tr>
+	<tr>
+		<td rowspan="2">No Approval</td>
+		<td>ACTIVE</td>
+		<td>UPDATE,RETIRE</td>
+	</tr>
+	<tr>
+		<td>RETIRED</td>
+		<td>DELETE,UPDATE,ACTIVATE</td>
+	</tr>
+	<tr>
+		<td rowspan="3">1-STEP Approval</td>
+		<td>PENDING</td>
+		<td>DELETE,UPDATE,APPROVE,REJECT</td>
+	</tr>
+	<tr>
+		<td>ACTIVE</td>
+		<td>UPDATE,RETIRE</td>
+	</tr>
+	<tr>
+		<td>RETIRED</td>
+		<td>DELETE,UPDATE,ACTIVATE</td>
+	</tr>
+	<tr>
+		<td rowspan="5">2-STEP Approval</td>
+		<td>PENDING</td>
+		<td>DELETE,UPDATE,APPROVE,REJECT</td>
+	</tr>
+	<tr>
+		<td>APPROVED</td>
+		<td>UPDATE,Trigger Alert Email,RELEASE</td>
+	</tr>
+	<tr>
+		<td>REJECTED</td>
+		<td>DELETE,UPDATE</td>
+	</tr>
+	<tr>
+		<td>ACTIVE</td>
+		<td>UPDATE,RETIRED</td>
+	</tr>
+	<tr>
+		<td>RETIRED</td>
+		<td>DELETE,UPDATE,ACTIVATE</td>
+	</tr>
+</table>
+<br/>
+<h3>Status Change Diagram</h3>
+<img src="model_management_files/status_diagram.jpg"  /><br/>
+<br/>
+<h2>Manage Models</h2>
+<h3>model entrance</h3>
+<p>Once the business rule and actions are configured by the administrator the model management is displayed in the durable main page.</p>
+<img src="model_management_files/model_menu.jpg"  /><br/>
+<h3>model list</h3>
+<p>The model management menu displays the model list page, the user can see all the models according to the equipment type and area selected during the login. This page allows to filter the models by the model attributes. When the user has the privilege to create models a CREATE button is displayed. The index number is a link to the details of the model.</p> 
+<img src="model_management_files/model_list.jpg"  /><br/>
+<h3>model create</h3>
+<p>When a model is created the user needs to enter the values of the attributes, the fields with an asterisk are mandatory. When a model is created if the approval process is enabled the status of the new model will be PENDING, otherwise it will be in ACTIVE status.</p>
+<p>There are fields that are are common to all the models, these fields are: model_name, model_description, equipment_type, area, Platform, Vendor.<br />
+The business rule for model management defines if a field is mandatory or optional, the details are in the <a href="user_guide_durable_management_admin.html#business_rules"  target="_self">durable management administration – business rule section</a>.<br />
+The model inherits the dynamic attributes from the equipment type.
+</p>
+<img src="model_management_files/model_create.jpg"  /><br/>
+<h3>model update</h3>
+<p>The update page allows to change any model attribute. All the durables that belong to this model are displayed at the bottom. When a model is updated the updated values are overwritten in the durables selected.</p>
+<img src="model_management_files/model_update.jpg"  /><br/>
+<h3>model detail</h3>
+<p>The details page displays all the model attributes: common attributes, dynamic attributes.  The action buttons in the toolbar vary according to the current status and the applicable actions, the details are in the model status section.</p>
+<img src="model_management_files/model_detail.jpg"  /><br/>
+<h3>model assignment</h3>
+<p>When a durable is created or updated the user must select a model, the fields that are defined in the model will be automatically filled. </p>
+<img src="model_management_files/model_assign.jpg"  /><br/>
+</body>
+</html>

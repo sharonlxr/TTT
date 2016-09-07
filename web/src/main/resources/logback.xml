@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="30 seconds" debug="true">
+	<timestamp key="byDay" datePattern="yyyy-MM-dd" />
+ 	<statusListener class="ch.qos.logback.core.status.OnConsoleStatusListener" />
+ 	
+	<appender name="ERROR-APPENDER" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${catalina.home}/logs/error.log</file>
+		<filter class="ch.qos.logback.classic.filter.LevelFilter">
+		    <level>ERROR</level>
+		    <onMatch>ACCEPT</onMatch>
+		    <onMismatch>DENY</onMismatch>
+	    </filter>
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<Pattern>%d{yyyy-MM-dd_HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</Pattern>			
+		</encoder>
+ 
+		<rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+			<FileNamePattern>${catalina.home}/logs/error.%i.log.gz</FileNamePattern>
+			<MinIndex>1</MinIndex>
+			<MaxIndex>20</MaxIndex>
+		</rollingPolicy>
+ 
+		<triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+			<MaxFileSize>20MB</MaxFileSize>
+		</triggeringPolicy>
+	</appender>
+	
+	<appender name="STATE-STAMPER-APPENDER" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${catalina.home}/logs/state-stamper.log</file>
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<Pattern>%d{yyyy-MM-dd_HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</Pattern>			
+		</encoder>
+ 
+		<rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+			<FileNamePattern>${catalina.home}/logs/state-stamper.%i.log.gz</FileNamePattern>
+			<MinIndex>1</MinIndex>
+			<MaxIndex>20</MaxIndex>
+		</rollingPolicy>
+ 
+		<triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+			<MaxFileSize>20MB</MaxFileSize>
+		</triggeringPolicy>
+	</appender>
+	
+	<appender name="ACCESS-APPENDER" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${catalina.home}/logs/access.log</file>
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<Pattern>%d{yyyy-MM-dd_HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</Pattern>			
+		</encoder>
+ 
+		<rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+			<FileNamePattern>${catalina.home}/logs/access.%i.log.gz</FileNamePattern>
+			<MinIndex>1</MinIndex>
+			<MaxIndex>20</MaxIndex>
+		</rollingPolicy>
+ 
+		<triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+			<MaxFileSize>20MB</MaxFileSize>
+		</triggeringPolicy>
+	</appender>
+	
+	<appender name="TRANSACTION-MANAGER-APPENDER" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${catalina.home}/logs/transaction-manager.log</file>
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<Pattern>%d{yyyy-MM-dd_HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</Pattern>			
+		</encoder>
+ 
+		<rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+			<FileNamePattern>${catalina.home}/logs/transaction-manager.%i.log.gz</FileNamePattern>
+			<MinIndex>1</MinIndex>
+			<MaxIndex>20</MaxIndex>
+		</rollingPolicy>
+ 
+		<triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+			<MaxFileSize>20MB</MaxFileSize>
+		</triggeringPolicy>
+	</appender>
+	
+	<appender name="CLIENT-MESSAGE-APPENDER" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${catalina.home}/logs/client-message.log</file>
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<Pattern>%d{yyyy-MM-dd_HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</Pattern>			
+		</encoder>
+ 
+		<rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+			<FileNamePattern>${catalina.home}/logs/client-message.%i.log.gz</FileNamePattern>
+			<MinIndex>1</MinIndex>
+			<MaxIndex>20</MaxIndex>
+		</rollingPolicy>
+ 
+		<triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+			<MaxFileSize>20MB</MaxFileSize>
+		</triggeringPolicy>
+	</appender>
+	
+	<appender name="SITES-FILTER-APPENDER" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${catalina.home}/logs/sites-filter.log</file>
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<Pattern>%d{yyyy-MM-dd_HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</Pattern>			
+		</encoder>
+ 
+		<rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+			<FileNamePattern>${catalina.home}/logs/sites-filter.%i.log.gz</FileNamePattern>
+			<MinIndex>1</MinIndex>
+			<MaxIndex>20</MaxIndex>
+		</rollingPolicy>
+ 
+		<triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+			<MaxFileSize>20MB</MaxFileSize>
+		</triggeringPolicy>
+	</appender>
+	<appender name="GENESIS-INTERFACE-APPENDER" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${catalina.home}/logs/genesis-interface.log</file>
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<Pattern>%d{yyyy-MM-dd_HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</Pattern>			
+		</encoder>
+		<rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+			<FileNamePattern>${catalina.home}/logs/genesis-interface.%i.log.gz</FileNamePattern>
+			<MinIndex>1</MinIndex>
+			<MaxIndex>20</MaxIndex>
+		</rollingPolicy>
+ 
+		<triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+			<MaxFileSize>20MB</MaxFileSize>
+		</triggeringPolicy>
+	</appender>
+	
+	<logger name="org.exolab" level="ERROR" additivity="false">
+		<appender-ref ref="ERROR-APPENDER" />
+	</logger>
+	<logger name="com.opensymphony.xwork2" level="ERROR" additivity="false">
+		<appender-ref ref="ERROR-APPENDER" />
+	</logger>
+	<logger name="org.apache.struts2" level="ERROR" additivity="false">
+		<appender-ref ref="ERROR-APPENDER" />
+	</logger>
+	<logger name="org.apache.ojb" level="ERROR" additivity="false">
+		<appender-ref ref="ERROR-APPENDER" />
+	</logger>
+	<logger name="stateStamper" level="INFO" additivity="false">
+		<appender-ref ref="STATE-STAMPER-APPENDER" />
+		<appender-ref ref="ERROR-APPENDER" />
+	</logger>
+	<logger name="sitesFilter" level="INFO" additivity="false">
+		<appender-ref ref="SITES-FILTER-APPENDER" />
+		<appender-ref ref="ERROR-APPENDER" />
+	</logger>
+	<logger name="client_message" level="INFO" additivity="false">
+		<appender-ref ref="CLIENT-MESSAGE-APPENDER" />
+		<appender-ref ref="ERROR-APPENDER" />
+	</logger>
+	<logger name="access" level="INFO" additivity="false">
+		<appender-ref ref="ACCESS-APPENDER" />
+		<appender-ref ref="ERROR-APPENDER" />
+	</logger>
+	<logger name="transactionManager" level="INFO" additivity="false">
+		<appender-ref ref="TRANSACTION-MANAGER-APPENDER" />
+		<appender-ref ref="ERROR-APPENDER" />
+	</logger>
+	<logger name="genesisInterface" level="INFO" additivity="false">
+		<appender-ref ref="GENESIS-INTERFACE-APPENDER" />
+		<appender-ref ref="ERROR-APPENDER" />
+	</logger>
+    <root level="ERROR">
+        <appender-ref ref="ERROR-APPENDER" />
+    </root>
+</configuration>

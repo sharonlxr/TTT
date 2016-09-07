@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN" "http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<constant name="struts.action.extension" value="action" />
+	<constant name="struts.devMode" value="true" />
+	<constant name="struts.configuration.xml.reload" value="true" />
+	<constant name="struts.serve.static.browserCache" value="false" />
+	<constant name="struts.i18n.encoding" value="utf-8" />
+	<constant name="struts.enable.DynamicMethodInvocation" value="true" />
+	<constant name="struts.enable.SlashesInActionNames" value="true" />
+
+	<package name="model" extends="struts-default" >
+		<interceptors>
+			<interceptor name="loginInterceptor" class="com.freescale.stateStamper.action.LoginInterceptor"/>
+			<interceptor-stack name="myStack">
+				<interceptor-ref name="loginInterceptor" />
+				<interceptor-ref name="defaultStack" />
+			</interceptor-stack>
+		</interceptors>
+   	 	<default-interceptor-ref name="myStack"/>
+   	 	<global-results>  
+            <result name="login">/durable_main.do</result>  
+        </global-results>
+        <action name="listModel" class="com.freescale.stateStamper.action.ModelAction" method="list">
+			<result name="success">/model/listModel.jsp</result>
+		</action>
+		<action name="showModel" class="com.freescale.stateStamper.action.ModelAction" method="detail">
+			<result name="success">/model/showModel.jsp</result>
+			<result name="list" type="chain">listModel</result>
+		</action>  
+		<action name="createModel" class="com.freescale.stateStamper.action.ModelAction" method="create">
+			<result name="success">/model/createModel.jsp</result>
+			<result name="success_creator">/model/createModel_creator.jsp</result>
+			<result name="list" type="chain">listModel</result>
+		</action>
+		<action name="editModel" class="com.freescale.stateStamper.action.ModelAction" method="edit">
+			<result name="success">/model/editModel.jsp</result>
+			<result name="success_approver">/model/editModel_approver.jsp</result>
+			<result name="success_releaser">/model/editModel_releaser.jsp</result>
+			<result name="list" type="chain">listModel</result>
+		</action>
+		<action name="saveModel" class="com.freescale.stateStamper.action.ModelAction" method="save">
+			<result name="success" type="chain">showModel</result>
+			<result name="input" type="chain">createModel</result>
+		</action>
+		<action name="updateModel" class="com.freescale.stateStamper.action.ModelAction" method="update">
+			<result name="success" type="chain">showModel</result>
+			<result name="list" type="chain">listModel</result>
+			<result name="input" type="chain">editModel</result>
+		</action>
+		<action name="approveModel" class="com.freescale.stateStamper.action.ModelAction" method="approve">
+			<result name="success" type="chain">showModel</result>
+			<result name="input" type="chain">showModel</result>
+		</action>
+		<action name="rejectModel" class="com.freescale.stateStamper.action.ModelAction" method="reject">
+			<result name="success" type="chain">showModel</result>
+			<result name="input" type="chain">showModel</result>
+		</action>
+		<action name="deleteModel" class="com.freescale.stateStamper.action.ModelAction" method="delete">
+			<result name="success" type="chain">listModel</result>
+			<result name="input" type="chain">showModel</result>
+		</action>
+		<action name="retireModel" class="com.freescale.stateStamper.action.ModelAction" method="retire">
+			<result name="success" type="chain">showModel</result>
+			<result name="input" type="chain">showModel</result>
+		</action>
+		<action name="releaseModel" class="com.freescale.stateStamper.action.ModelAction" method="release">
+			<result name="success" type="chain">showModel</result>
+			<result name="input" type="chain">showModel</result>
+		</action>
+		<action name="activateModel" class="com.freescale.stateStamper.action.ModelAction" method="activate">
+			<result name="success" type="chain">showModel</result>
+			<result name="input" type="chain">showModel</result>
+		</action>
+		<action name="triggerAlertEmail" class="com.freescale.stateStamper.action.ModelAction" method="triggerAlertEmail">
+			<result name="success" type="chain">showModel</result>
+		</action>
+	</package>
+
+	
+</struts>

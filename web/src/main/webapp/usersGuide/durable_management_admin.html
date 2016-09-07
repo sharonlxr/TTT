@@ -1,0 +1,532 @@
+<html>
+<body>
+<h2>Durable Management Administration</h2>
+<p>From TTT 3.1 version it includes a durable management module, it allows to manage different durables.<br/>
+The first thing the administrator needs to do is to define the equipment types that TTT is going to manage<br/>
+</p>
+<strong>Equipment Type definition</strong><br/>
+<p>From the Tool Time Tracker User Interface click on Equipment type to display a table with all the equipment types, to add or delete equipments right-click over the table</p>
+<img height="172" src="durable_management_admin_files/image001.png" width="540" /><br/>
+<p>Click on Add; the following dialog you can enter the<br/>
+Name: used to identify the equipment type, e.g. Tester<br/>
+Container: specify if this equipment is going to hold other equipments in it, valid values are Y/N<br/>
+Parent: indicates the Equipment Type that can hold this equipment type, the value has to be a Equipment Type that has been configured as container.<br/>
+Siblings: indicates if a type of equipment can have siblings from its type for a given parent<br/>
+Prop Status: if set as Yes, when doing transition on the parent , the transition can be prop up to the children attached to it.<br/>
+Area Name: indicates department name<br/>
+Mes Equipment Type: indicates genesis machine type name of current equipment type<br/>
+Sync Durable Flag: indicates if TTT need to send durable information to genesis<br/>
+Sync Model Flag: indicates if TTT need to send model information to genesis<br/>
+Platform Source: indicates the source of platform list in machines form<br/>
+Model source: indicates the source of model list in machines form<br/>
+Child source: indicates the source of child model in machines form<br/>
+<p/>
+
+<img height="218" src="durable_management_admin_files/image002.jpg" width="400" /><br/>
+<br/>
+<p><strong>Defining Attributes</strong><br/>
+To define attributes click on Attributes from the tree, this displays the defined attributes for the equipment table.</p>
+<img height="191" src="durable_management_admin_files/image009.jpg" width="410" /><br/>
+<p>Right-click to add/delete attributes, you need to enter the following data to define an attribute<br/>
+Name: used to identify the attribute<br/>
+Required: indicates if it is required to enter when introducing new equipments. Valid values are Y\N<br/>
+Belongs:&nbsp; it defines if the attribute belongs to the equipment or to the status of the equipment. Valid values are STATUS\EQUIPMENT<br/>
+Type: the type of the attribute; valid values are Text, Counter and ThresholdCounter. Text allow any ASCII character, Counter is a numeric values that can be incremented/set.ThresholdCounter consists of a common set of attributes that are listed in the table below<p/>
+<table border="1" cellpadding="0" cellspacing="0" width="75%">
+	<tbody>
+		<tr>
+			<th bgcolor="#85A6E6" >
+			<font color="white">Attribute Name</font><br/>
+			</th>
+			<th bgcolor="#85A6E6">
+			<font color="white">Description</font><br/>
+			</th>
+		</tr>
+		<tr>
+			<td>
+			<p>Name<br/>
+			</td>
+			<td>
+			<p>The name of the ThresholdCounter<br/>
+			</td>
+		</tr>
+		<tr>
+			<td>
+			<p>eiVariable<br/>
+			</td>
+			<td>
+			<p>An variable sent in an EPR event to the server<br/>
+			</td>
+		</tr>
+		<tr>
+			<td>
+			<p>units<br/>
+			</td>
+			<td>
+			<p>The unit of the measurement<br/>
+			</td>
+		</tr>
+		<tr>
+			<td>
+			<p>serviceUsageLimit<br/>
+			</td>
+			<td>
+			<p>limit to indicate that this durable needs service<br/>
+			</td>
+		</tr>
+		<tr>
+			<td>
+			<p>serviceUsage<br/>
+			</td>
+			<td>
+			<p>Count the usage since the last service<br/>
+			</td>
+		</tr>
+		<tr>
+			<td>
+			<p>totalServicesLimit<br/>
+			</td>
+			<td>
+			<p>number of services this durable is allowed to receive<br/>
+			</td>
+		</tr>
+		<tr>
+			<td>
+			<p>totalServices<br/>
+			</td>
+			<td>
+			<p>Number of services this durable has received<br/>
+			</td>
+		</tr>
+		<tr>
+			<td>
+			<p>rebuildUsageLimit<br/>
+			</td>
+			<td>
+			<p>to indicate that this durable needs a rebuild<br/>
+			</td>
+		</tr>
+		<tr>
+			<td>
+			<p>rebuildUsage<br/>
+			</td>
+			<td>
+			<p>Count the usage since the last rebuild<br/>
+			</td>
+		</tr>
+		<tr>
+			<td>
+			<p>totalRebuildsLimit<br/>
+			</td>
+			<td>
+			<p>number of rebuilds this durable is allowed to receive<br/>
+			</td>
+		</tr>
+		<tr>
+			<td>
+			<p>totalRebuilds<br/>
+			</td>
+			<td>
+			<p>Number of rebuilds this durable has received<br/>
+			</td>
+		</tr>
+		<tr>
+			<td>
+			<p>lifeLimit<br/>
+			</td>
+			<td>
+			<p>limit to indicate that this durable has reached its life in service, and is going to be scrapped<br/>
+			</td>
+		</tr>
+		<tr>
+			<td>
+			<p>lifeUsage<br/>
+			</td>
+			<td>
+			<p>The usage this durable has during his lifetime<br/>
+			</td>
+		</tr>
+	</tbody>
+</table>
+<br/>
+<img height="153" src="durable_management_admin_files/image012.jpg" width="244" /><br/>
+<p>When an attribute is of type ThresholdCounter and the user clicks on configuration the cofiguration options are displayed. The configuration options for Threshold Counters are eiVariable and Units. Units valid values are Usage, Time. EI Variable is the variable that will be present in the incoming EPR that is going to increase the counter.When adding a durable that has a ThresholdCounter the limits of the counter are displayed to be entered.The limits are life Limit, total rebuilds Limit, rebuild usage limit, service usage limit, total services limit.
+<p/>
+<strong>Business Rules</strong><br/>
+<p>Business Rules define the behavior of the durable when a certain event happens. A business rule consists of three parts, the event that triggers it, the conditions that need to be met in order to execute it and the actions to perform.<br/>
+Click on Business Rules to display the list of business rules defined, the table shows the event that trigger the business rules and the name of the rule, the event can be selected from a list of predefined events. The following table lists the events supported<p/>
+<table border="1" cellpadding="0" cellspacing="0">
+	<tbody>
+		<tr>
+			<th bgcolor="#85A6E6" style="width:319px;">
+			<font color="white"><strong>Events</strong></font><br/>
+			</th>
+			<th bgcolor="#85A6E6" style="width:319px;">
+			<font color="white">Description</font><br/>
+			</th>
+		</tr>
+		<tr>
+			<td style="width:319px;">
+			<p>EPR Received<br/>
+			</td>
+			<td style="width:319px;">
+			<p>TTT receives an EPR message from the client<br/>
+			</td>
+		</tr>
+		<tr>
+			<td style="width:319px;">
+			<p>Monitor<br/>
+			</td>
+			<td style="width:319px;">
+			<p>Continuous monitoring on the durable.<br/>
+			</td>
+		</tr>
+		<tr>
+			<td style="width:319px;">
+			<p>Add Equipment<br/>
+			</td>
+			<td style="width:319px;">
+			<p>A new equipment is entered into TTT<br/>
+			</td>
+		</tr>
+		<tr>
+			<td style="width:319px;">
+			<p>Attach Child Equipment<br/>
+			</td>
+			<td style="width:319px;">
+			<p>Enable to attach one or many of the durables that the equipment type has configured as child<br/>
+			</td>
+		</tr>
+		<tr>
+			<td style="width:319px;">
+			<p>Model Configuration<br/>
+			</td>
+			<td style="width:319px;">
+			<p>Configure Model Attributes<br/>
+			</td>
+		</tr>
+	</tbody>
+</table>
+<br/>
+<p><strong>Conditions </strong><br/>
+A condition consists of three parts<br/>
+<strong>Attribute:</strong> one of the attributes of the equipment type<br/>
+<strong>Condition:</strong> the operator to use in the evaluation, it could be =, &gt;, &gt;=, &lt;= and In.&nbsp;<br/>
+<strong>Cond Value: </strong>value to use in the evaluation, it could be a literal value or an attribute of the equipment.<p/>
+<img height="149" src="durable_management_admin_files/image010.jpg" width="356" />&nbsp;<br/>
+<p><strong>Actions:</strong><br/>
+The action to execute when the conditions are met. The actions can be one of the following<p/>
+	<table border="1" cellpadding="0" cellspacing="0">
+		<tbody>
+			<tr>
+				<th bgcolor="#85A6E6" style="width: 191px;"><font color="white"><strong>Actions</strong></font><br />
+				</th>
+				<th bgcolor="#85A6E6" style="width: 402px;"><font color="white"><strong>Description</strong></font><br />
+				</th>
+				<th bgcolor="#85A6E6" style="width: 478px;"><font color="white"><strong>Parameters</strong></font><br />
+				</th>
+			</tr>
+			<tr>
+				<td style="width: 191px;"><strong>Send Email</strong></td>
+				<td style="width: 402px;">send an email to the list specified
+					in the parameters</td>
+				<td style="width: 478px;">email address or coreID seperate by
+					&quot;,&quot;</td>
+			</tr>
+			<tr>
+				<td style="width: 191px;"><strong>Alarm on Window</strong></td>
+				<td style="width: 402px;">the durable blinks on the Tool Time
+					Tracker main view.</td>
+				<td style="width: 478px;">RGB color in hexadecimal format for
+					color of flashing</td>
+			</tr>
+			<tr>
+				<td style="width: 191px;"><strong>Update State via EPR</strong>
+				</td>
+				<td style="width: 402px;">perform transition according to
+					incoming epr message</td>
+				<td style="width: 478px;">Specify the mapping between Tester
+					state (flowed by &quot;_SUBSTATE&quot;)and the particular Equipment
+					state, such as &quot;PRODUCTIVE_SUBSTATE=Production
+					Running,STANDBY_SUBSTATE=Production Ready&quot;</td>
+			</tr>
+			<tr>
+				<td style="width: 191px;"><strong>Update Durable</strong></td>
+				<td style="width: 402px;">update particular attributes
+					according to the incoming epr</td>
+				<td style="width: 478px;">the attribute name in the EPR message
+				</td>
+			</tr>
+			<tr>
+				<td style="width: 191px;"><strong>Generate file</strong></td>
+				<td style="width: 402px;">generate the file on the folder configured as &quot;transferDirectory&quot;</td>
+				<td style="width: 478px;"><b>Timeout</b>: frequency to create the file in minutes. <br/>
+				                          <b>Head</b>: the message on the first line that not part of content.<br/>
+				                          <b>Filename</b>: name of the file.<br/> 
+				                          <b>Content</b>: the format of each line of content separate by &quot;#&quot;.<br /> 
+				                          Example: Timeout=1,Head=Connected.,Filename=overtouchdown_pc.txt,Content=DURABLE_ID#location
+				</td>
+			</tr>
+						<tr>
+				<td style="width: 191px;"><strong>Generate File from Template</strong></td>
+				<td style="width: 402px;">generates a file based on a template,  the file is located in the folder configured as &quot;transferDirectory&quot;</td>
+				<td style="width: 478px;"><b>timeout</b>: frequency to create the file in minutes. <br/>
+				                          <b>Filename</b>: name of the file.<br>
+				                          <b>Head</b>: the message on the first line that not part of content.<br/>
+				                          <b>template</b>:template to be used to create the file, currently  two templates are provided : template_ProbeCard_RPS.txt and template_LoadBoard_RPS.txt these templates are in the WEB-INF directory
+				                          Example: fileName=probeCardFeed,timeout=60,template=template_ProbeCard_RPS.txt
+				</td>
+			</tr>
+			<tr>
+				<td style="width: 191px;"><strong>Initialize State</strong></td>
+				<td style="width: 402px;">Initialize a new equipment added with
+					the state specified</td>
+				<td style="width: 478px;">STATE:E10 state to set<br />
+					SUBSTATE:substate to set<br /> Example: STATE=Standby,SUBSTATE=Idle
+				</td>
+			</tr>
+			<tr>
+				<td><b>Update Multiple</b></td>
+				<td>Update multiple durables of the same type with a single EPR</td>
+				<td>This action must be defined in the EPR-Receiving Equipment (usually the tester) and  in the multiple-attached durable, the following parameters are defined in the
+				EPR-Receving Equipment, in the multiple-attached durable the action is defined without parameters<br/> 
+				<b>equipment_type</b>: the equipment type that have multiple durables e.g Socket <br/>
+				<b>id_variable</b>: the context variable that will have the name of the durables, it will accept ? as a wildcard character <br/>
+				<b>increment_variable</b>: the summing variables that will have the increment, it will accept ? as a wildcard character<br/>
+				<b>limit</b>: the number of variables that are in the message, for example 32, 64, 128<br/>
+				</td>
+			</tr>
+			<tr>
+				<td><b>Attach Multiple</b></td>
+				<td>It enables to attach multiple child equipments to the parent equipment type<br>
+				This action must be defined in a parent equipment type (it receives children equipment) and in a rule with the Attach Child Equipment event<br>
+				For example a Loadboard that receives multiple Sockets, the parent is the Loadboard and the actions would be defined on it.
+				</td>
+				<td>
+				<b>CHILDREN_EQUIPMENT_TYPE</b>: it should be the exact name of the equipment type to attach. in this sample it would be Socket<br/>
+				<b>CHILDREN_NUMBER</b>: indicates how many children will be attached during a Attach Multiple operation. It could be a numeric value or an attribute of the parent equipment Type. if the value starts with a $ it is taken as an attribute<br/>
+				</td>
+			</tr>
+			<tr>
+				<td><b>Set Index</b></td>
+				<td>It sets an index in the durable during Attach Multiple <br>
+				This action must be defined in a rule with the Attach Child Equipment event<br>
+				For example a Loadboard that receives multiple Sockets, the parent is the Loadboard and the actions would be defined on it.
+				</td>
+				<td>
+				<b>INDEX_VAR</b>: the variable that will hold the index in the attached durable<br/>
+				</td>
+			</tr>
+			<tr>
+				<td><b>Update Multiple by Index</b></td>
+				<td>It enable to update multiple durables with one  EPR, the multiple durables are updated according to the variable in the replace<br>
+				This action must be defined in a rule for the EPR Received event<br>
+				it is defined in the attached durable.
+				</td>
+				<td>
+				<b>FIELD</b>: the variable that will hold the index in the attached durable<br/>
+				<b>REPLACE</b>: the name of the variable from the EPR that will update the durable, it contains a ? that will be replaced with the index specified in the FIELD argument
+				</td>
+			</tr>
+			<tr>
+				<td><b>Update Attribute with External Source</b></td>
+				<td>Update an attribute of the equipment with an external data source</td>
+				<td>This action must be defined in a monitor business rule <br/> 
+				in order for this business rule to work the external data source should be configured in conf.txt.<br/>
+				The properties to configure are :OracleExternalDBServer, OracleExternalUser, OracleExternalPassword,OracleExternalPort,OracleExternalSID. see the conf.txt documentation for more details<br/>
+				<b>query</b>: the SQL query to execute, if an attribute of the equipment is going to be used as a parameter it should be prefixed by $.
+				<br>sample<br>
+				"select partname from part where activeflag = 'A' and partname like '%$MASK'" where MASK is an attribute of the equipment where this rule is defined<br/>
+				<b>attribute</b>: the equipment attribute that is going to be updated with the result for the query <br/>
+				<b>timeout</b>: number of minutes where this action will be executed<br/>
+				parameters need to follow the json format. e.g.<br/>
+				everything should be between {},  parameters are name:value where value is a string enclosed by " ", multiple parameters are separated by ,<br>
+				{query:"select partname from part where activeflag = 'A' and partname like '%$MASK'",attribute:"ALLOWED_DEVICE",timeout:"60"}<br/>
+				This parameters define that the attribute ALLOWED_DEVICE would be updated with the result from the query, the query uses the equipment attribute MASK as a parameter 
+				and this action will be executed every 60 minutes
+				</td>
+			</tr>
+			<tr>
+				<td><b>Display in Monitor Page</b></td>
+				<td>Display durables in PM Monitor page </td>
+				<td>
+				count: the variable with the usage or time for the PM 
+				limit : the variable with the limit for the PM
+				example count=TOUCHDOWN$serviceUsage,limit=TOUCHDOWN$serviceUsageLimit
+				</td>
+			</tr>
+			<tr>
+				<td><b>Add Verification Checkbox</b></td>
+				<td>Highlight dropdowns in attach children page</td>
+				<td>
+					no attributes
+				</td>
+			</tr>
+			<tr>
+				<td><b>Auto Model Name</b></td>
+				<td>It enable to generate model name automatically</td>
+				<td>
+				<b>This action belongs to model management function.</b>
+				method:the way to generate model name
+				possible values:3-DIGITS
+				filterCharacters:if true, means the model name will be generated using subset of alphanumeric characters(exclude B, D, G, I, J, O, U, V,0)
+				possible values:true,false
+				example:method=3-DIGITS,filterCharacters=true
+				</td>
+			</tr>
+			<tr>
+				<td><b>Auto Model Description</b></td>
+				<td>It enable to generate model description automatically</td>
+				<td>
+				<b>This action belongs to model management function.</b>
+				value:the expression to generate model description 
+				example:value=LB-${tester}-${nickname}-${pkgcode}-${parellel}-${handler}
+				</td>
+			</tr>
+			<tr>
+				<td><b>Mandatory Fields</b></td>
+				<td>mandatory model attributes</td>
+				<td>
+				<b>This action belongs to model management function.</b>
+				attributes:the mandatory model attributes  
+				example:attributes=[tester,nickName,pkgCode,parallel,handler]
+				</td>
+			</tr>
+			<tr>
+				<td><b>Optional Fields</b></td>
+				<td>optional model attributes</td>
+				<td>
+				<b>This action belongs to model management function.</b>
+				attributes:the optional model attributes  
+				example:attributes=[prodLine,device,lbQty]
+				</td>
+			</tr>
+			<tr>
+				<td><b>Dropdown Values</b></td>
+				<td>Configure attributes value list if user want to select them</td>
+				<td>
+				<b>This action belongs to model management function.</b>
+				example:SITES_NUMBER=[4,8,16,32],handler=[castle,J750]
+				</td>
+			</tr>
+			<tr>
+				<td><b>Creator Role</b></td>
+				<td>Configure a list of rolePk who can create model</td>
+				<td>
+				<b>This action belongs to model management function.</b>
+				role:the list of creator rolePk split by comma
+				example:role=[1,20]
+				</td>
+			</tr>
+			<tr>
+				<td><b>Approver Role</b></td>
+				<td>Configure a list of rolePk who can approve model</td>
+				<td>
+				<b>This action belongs to model management function.</b>
+				role:the list of approver rolePk split by comma
+				example:role=[1,21]
+				</td>
+			</tr>
+			<tr>
+				<td><b>Releaser Role</b></td>
+				<td>Configure a list of rolePk who can release model</td>
+				<td>
+				<b>This action belongs to model management function.</b>
+				role:the list of releaser rolePk split by comma
+				example:role=[1,22]
+				</td>
+			</tr>
+			
+			<tr>
+				<td><b>Approval Process</b></td>
+				<td>approval type</td>
+				<td>
+				<b>This action belongs to model management function.</b>
+				Possible Values:
+					type=1, No Approval required.
+					type=2. Need approval, no need for release.
+					type=3. Need approval, release.
+				</td>
+			</tr>
+			<tr>
+				<td><b>Overwrite Durable Attributes</b></td>
+				<td>It enable to trigger an update for a list of durable attributes belong the model once user update the model attributes </td>
+				<td>
+				<b>This action belongs to model management function.</b>
+				Possible Values:
+					flag=true, user is able to select a list of durables to apply the attributes change.
+					flag=false, user is not able to select durable list to apply the attributes change.
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	<br/>
+<p><strong>Transitions:</strong><br/>
+Click on Transitions to view the State Transitions defined for this durable<p/>
+<img height="225" src="durable_management_admin_files/image008.png" width="708" /><br/>
+<p>To add or delete state transitions right-click.<br/>
+The administrator needs to specify the following items:<br/>
+From: The initial state of durable<br/>
+To: the final state of the transition<br/>
+Conditions: the conditions to evaluate in order perform this transitions, they are similar to the conditions defined for business rules. For example, &quot;Multiple-in&quot; is to allow user to select value defined in condition value from a drop down list when conducting transition. &quot;Display&quot; is to not allow a certain attribute to be editable during a transition.<br/>
+Action: To perform increase or reset on selected attributes after transition.&nbsp;<p/>
+<table border="1" cellpadding="0" cellspacing="0" width="75%">
+	<tbody>
+		<tr>
+			<th bgcolor="#85A6E6" >
+			<font color="white">Action</font><br/>
+			</th>
+			<th bgcolor="#85A6E6" >
+			<font color="white">Description</font><br/>
+			</th>
+			<th bgcolor="#85A6E6" >
+			<font color="white">Parameters</font><br/>
+			</th>
+		</tr>
+		<tr>
+			<td><b>Increase</b></td>
+			<td>Increase by 1 the counter specified in the parameter</td>
+			<td>The name of the attribute to increase, it must be a counter</td>
+		</tr>
+		<tr>
+			<td><b>Decrease</b></td>
+			<td>Decrease by 1 the counter specified in the parameter</td>
+			<td>The name of the attribute to decrease, it must be a counter</td>
+		</tr>
+		
+		<tr>
+			<td><b>Increase by<b></td>
+			<td>Increase the counter specified in the &quot;attribute&quot; parameter by the quantity specified in the &quot;by&quot; parameter </td>
+			<td>attribute:the name of the counter to increase<br/>
+				by:the name of the variable or value with the quantity of the increment 
+			</td>
+		</tr>
+		
+		<tr>
+			<td><b>Decrease by</b></td>
+			<td>Decrease the counter specified in the &quot;attribute&quot; parameter by the quantity specified in the &quot;by&quot; parameter</td>
+			<td>attribute:the name of the counter to decrease<br/>
+				by:the name of the variable or value with the quantity of the increment </td>
+		</tr>
+		
+		<tr>
+			<td><b>Reset</b></td>
+			<td>Reset the attribute specified to 0 if counter o &quot;&quot; if text</td>
+			<td>attribute:the name of the attribute to reset</td>
+		</tr>
+		<tr>
+			<td><b>Set</b></td>
+			<td>Set the attribute to the value specified, if the value starts with $ it is interpreted as a variable from the durable</td>
+			<td>attribute: the name of the attribute to set<br />
+			    value: the value to set <br />
+			    example: attribute=Location, value=shelf <br/> 
+			    it will set the Location attribute to shelf <br/>
+			    	attribute=Location, value=$slot<br/> 
+			    it will set the Location attribute to the value from the durable field slot<br/>
+			</td>
+		</tr>
+    <tbody>
+</table>
+<br/>
+</body>
+</html>

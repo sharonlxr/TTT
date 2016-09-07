@@ -1,0 +1,239 @@
+<html>
+<body>
+<h2>TTT Change Log</h2>
+<h3>Releases</h3>
+<ul>
+<li><a href="#46"> 4.6</a></li>
+<li><a href="#45"> 4.5</a></li>
+<li><a href="#44"> 4.4</a></li>
+<li><a href="#43"> 4.3</a></li>
+<li><a href="#42"> 4.2</a></li>
+<li><a href="#41"> 4.1</a></li>
+<li><a href="#40"> 4.0</a></li>
+<li><a href="#33"> 3.3</a></li>
+<li><a href="#32"> 3.2</a></li>
+<li><a href="#311"> 3.1.1</a></li>
+</ul>
+<h3><a id="46">4.6</a></h3> 
+<p>
+• ENHC0011897: Propagate model updates to Genesis Models.<br /> 
+• ENHC0011964: Add area, location, Proc_Name, Pseq_Number and Step_Name to DQM Parts Substate.<br />
+• ENHC0011976: PNP performance report for Matrix<br />
+• ENHC0012050: Model enhancement<br />
+• ENHC0012197: Durable transitions send states updates to the PIC<br />
+• ENHC0012215: Add Shaker to testers<br /> 
+• ENHC0012557: Allow to login with ALL Area<br />
+</p>
+<h3><a id="45">4.5</a></h3> November 2015
+<p>
+• ENHC0010810: Highlight socket display only<br />
+• ENHC0010818: Add the duration of each state in dashboard<br /> 
+• ENHC0010824: Add Temperature Change Report<br />
+• ENHC0010831: Add support for Model Management.<br />
+• ENHC0011287: Implement the corporate fiscal calendar SOR<br />
+• ENHC0011669: truncate values that are too long instead of discarding them<br />
+• ENHC0011671: Site Performance report re-calculate that impact UFLEXB platform<br />
+• ENHC0011679: Enhance performance of GUI refresh<br />
+</p>
+<h3><a id="44">4.4</a></h3> July 2015
+<p>
+• CR59912: Send current Durable Configuration to Genesis<br />
+• CR60628: When eventTime is client do not generate events when idleInterval and writeInterval are expired<br />
+• CR60806: Add new Fields to the DQM Parts Substate data file and add Probe Load Files (DQM)<br />
+• CR60809: When a tester is renamed remove the old name from the GUI <br />
+• NA: Enhance  8 bin Report <br />
+</p>
+
+<h3><a id="43">4.3</a></h3>May 2015
+<p>
+• CR59373: Add 1st pass Bin8 report<br />
+• CR60268: PPDS New Machine Transaction Data<br />
+• CR59741: Add Handshake to SC2-TTT communication<br />
+• CR60399: Allow to use a variable in the transition action Set<br />
+</p>
+<h3><a id="42">4.2</a></h3>April 2015 
+<p>
+• CR58089: store client events right after they are received<br />
+• CR59119: Remove deadlock<br />
+• CR55530: Use Tester Event Time instead of Server Time<br />
+</p>
+
+<h3><a  id="41">4.1</a></h3>Build 1167 - December 2014
+<p>
+• CR44725: Add an option to select all testers in scheduled reports<br />
+• CR54234: Verify CoreID and display full name in durable transitions.<br />
+• CR54540: Enhancement for socket insertion count from Pic.<br />
+• CR55492: Implement dynamic data with json and a standard library.<br /> 
+• CR55505: Use a Log Framework instead of java logging<br />
+• CR55506: Improve Session handling. <br />
+• CR55507: Transaction handling change.<br />
+• CR55531: Use only one type of summary records<br />
+• CR55977: durable children validator<br />
+• CR55978: Add Manual Equipment Type reload<br />
+• CR56084: Add Area Support.<br />
+• CR56225: Filter testers that do not have devices processed in site performance report<br /> 
+• CR56244: durable attribute validator.<br />
+• CR56245: Import data from excel to TTT database<br />
+• CR56452: Any user with OneITPassword can login  <br />
+• CR57671: Excel could not open/save in History page in IE.<br />
+• CR58204: Operator Assists- LB Touchdown Count Display: only durables in Productive state should be displayed<br /> 
+• CR58032: Custom filter for Sites Available on FPSPL : make sites available configurable depending on the Test program and flow id<br />
+• CR58416: Accumulated Operator Assist Loss report:<br />
+• NA: update java client to be signed with a 3rd party certificate <br />
+• NA: Fix csv reports not generated when null location<br />
+• NA: reduce the session timeout to 30 minutes<br />
+• NA: JAM scheduler report fix: JAM events with same time are displayed when they shouldn’t<br /> 
+• NA: totalServices, totalServicesLimit, totalRebuilds, totalRebuilds values should be in number format rather than time format<br />
+• NA: Fix. In durable_detail page, the transaction history is not ordered by time desc.<br />
+</p>
+
+<h3><a  id="40">4.0</a></h3>Build 911 - March 2014
+<p>
+• CR53956: site performance report<br />
+• CR52729: Filter out sub state which should not charge as OEE loss (Soaking and Alarm handler to Productive Test) <br />
+• CR53957: program loading error report<br />
+• CR54508: Association filter, flexible needed, assign child platform to multiple list of parent’s. Add contains.<br /> 
+• CR53888:  Do not insert unknown state records during summarization. <br />
+• CR54300: 6 months loadboard in ‘idle’ state need to do PM before release to Production state.<br />
+• enable multiple to address for monitor email<br />
+• fix null core id issue of comments field<br />
+• Application signed with a new valid Freescale certificate<br />
+• Set the DB connection pool to increase when exhausted <br />
+• remove jxl warning log during report generation <br />
+• Avoid startup abortion when testers or durables are missing status records<br />
+• Bug: TTT unable to handle dynamic attributes without name.<br /> 
+• Display location as Unknown for durables without location.<br />
+• Issue during association with new Machines.<br />
+• Remove the JDBC drivers when the application is stopped.<br />
+• fix durable transition report not generated<br />
+</p>
+<h3><a id="33">3.3</a> </h3>
+Build 840 - Dec 2013
+<p>
+• CR47408: to pull allowed devices from local sites Torrent database<br />
+• CR52649: Manual site-socket association<br />
+• CR52680: Multiple-selection for Child association to parent<br />
+• CR49628: remove the reloading of Tester attributes from the reloadSettings operation.<br />
+• RealtimeSimpleHistoryReport: when there is a durable selected use the equipmentType of the durable instead of the equipmentType of the session since the durable id may be different than the current session<br />
+• PropagateStatus : When a parent equipment tries to propagate the transition to a child durable it fails if the transition actions update attributes that  are not in the child durable<br />
+• Display the state color in the search results <br />
+• Add Excel export to History report<br />
+• History Search Page: enable it to display results for more than one machine, and order the results according to the report definition<br />
+• fix for getPercentage, some divisions cause an infinite number of decimals ( 1/3 = .333) <br />
+• Add History option in Reports menu to query any card for a certain period frame or any particular state.<br />
+• Improve Search performance: before search was looking at the deprecated view durable_status_v, now it is looking at the cache<br />
+• PNP Bug fixed - Inconsistent PNP summary report generated<br />
+• Losses and Losses breakdown reports bug: do not show 100% of the time for some testers, this is because some substatates are not included in the reports.<br />
+• Do forward messages to Diamond, PIC and Promis only for Testers.<br />
+</p>
+<h3><a id="32">3.2</a></h3>
+Build 810
+<p>
+• CR49263: PNP Performance reporting<br />
+• CR50335: Add good count to losses and losses breakdown report<br />
+• CR46381: at start context variables were overwriting the standby substate, set standby substate after the context are loaded<br />
+• CR41144: socket count; Clients may send only the socket number, the socket number could be duplicate between platform.<br />
+• CR42197: criteria by time	need to change to WW format<br />
+• CR49708: Transitions to support parameterized increase/decrease<br />
+• CR49242: default state for new durables to be configurable<br />
+• CR49844: scheduled reports with + in the name can't be downloaded<br />
+• CR41144: Support socket count tracking for final test.<br />
+• add type field as an available field in transition conditions and to business rules conditions<br />
+• When getting percentage values use long instead of int since int does not have enough capacity to handle dates in milliseconds<br />
+• disable submit button after first click to avoid duplicate submit<br />
+• add NORM function, it returns UNKNOWN  for null or empty strings and convert to uppercase so it is not case sensitive<br />
+• Pin - To update preferred pin type from user<br />
+• Update only filtered pin type Test2 list provide by User.<br /> 
+• set up the Equipment Type to Tester for State and Substate Transitions report in getStateTransitions method<br />
+• in real-time durable reports include in the report columns the arguments of function columns<br />
+• sort the list of equipmentTypes at login<br />
+• preselect the latest equipment type used<br />
+• use the FSL standard colors in the extended dialog<br />
+• use the extended dialog also for values with a length greater than 40<br />
+• generateDurableReport: for real-time reports only retrieve the fields defined in the report realtime_durable_reports.txt instead of all the fields defined in the EquipmentType, this is not needed and cause performance issues when there are a lot of equipment attributes<br />
+• change to filter out the illegal input from users<br />
+• Fix reset workstation list, refresh workstation list after the fields entered in the association business rule condition are entered<br />
+• location code change<br />
+• setChildNames : remove the hard code reference to LOADBOARD_ID<br />
+• fix: when we execute the transition action to reset the Time attribute, immediately after that we execute the business rule to update that same time attribute. This create a conflict. we  set a exceptionlist of attributes when processing the transition action. If the attribute in that list, the time base business rule update will ignore that attribute.<br /> 
+• StateTransition : destroy: shutdown StatusSenderExecutor and biznessRuleUpdateExecutor<br /> 
+• Filter workstation list by platform<br />
+• Check only for the first part of the Equipment Type name when looking for child ids in the EPR.<br />
+• if there is null value in the attribute the report filter function will fail. <br />
+• update length of 'Request By' textBox<br /> 
+• Client - update length of Users Administrator 'Role Name' drop-down menu<br />
+• Make search - display results configurable<br />
+• Error in Losses - Temperature, there was an error in the report definition in reports.txt, the category must be BLANK and the Subcategory 2 must be TEMPERATURE, but it was the inverse<br />
+• FormatReport.java : Validation on NULL value for subState group<br />
+• fix getDefaultEquipmentType() in getCurrentEquipmentType method<br />
+• when there is no EquipmentType defined return the machines of the defaultEquipmentType defined in conf.txt instead of the hard coded EquipmentType<br />
+• Add CURRENT_STATE_DURATION attribute<br />
+• Make Real Time reports display only Testers<br />
+• Add defaultEquipmentType configuration option<br />
+• Edit length of workstation drop-down menu  <br />
+• add the standard groupings to the new Good Count Report.<br />
+• add deviceGroup to the commonAttributes so the business rules can use it in the conditions<br /> 
+• add TESTER_EXEC_VERSION<br />
+• remove duplicate time with incorrect data in Real Time Report - Data by Type, Location<br />
+• multi-thread processing EVR message<br />
+• Monitor updatesUse alias in PM monitors, Change the time from msecs to date format in PM monitors, sort the results according to the definition in realtime_durable_reports.txt<br />
+• Mark required fields with and *<br />
+• when there is no limit being set for threshold attribute. The value will be "-" in the real time report<br />
+• remove the trailing "," when creating the report menu, internet explorer interprets it as a null value and throws an exception<br />
+• DurableEmail: add sendHTML <br />
+• Fix on the Time stamp display issue<br />
+• fix the header issues on the history report<br />
+• Added more logs to detact when a report failed<br />
+• change to fix the issues on the Children display on the report and the other minor issues<br />
+• Display time based limits in Days in the Machine configuration<br />
+• fix to disable attachment management function on the durable_details page if there is no attachment attribute configured.<br />
+• Issue for Child durable id filled in operator_id<br />
+• Adding new business rules to make the reports header configurable<br />
+• handle vectors in inventory-summary tables<br />
+• encode the name of the file so + and other characters are handled properly<br />
+• For realtime state & touchdown report pages, as we can configure the search results, user asked to include the bar shown can be configurable in those pages.<br />
+</p>
+<h3><a id="311">3.1.1</a></h3>
+Build 684
+<p>
+• CR41328: do not display E10 state for the from State<br />
+• CR42197: Time based Attribute<br />
+• CR45846: Location feature enhancement<br /> 
+• CR46347: 'propagate status to children?' display or not can be configurable<br />
+• CR46348: All attribute to be cleared when open new transition page. increase reset action to reset counters as well<br />
+• CR46381: Reset Tester status to the last known status when the system restarts. <br />
+• CR46382: TTT method for sc2 to query durable status<br />
+• CR47818: Need to have alert when trying to delete machine in the list.<br />
+• Defect: role conditions do not work<br />
+• for TTT -> PIC messages always set EVENT_ID/A=\"EQUIP_INFO\"<br />
+• remove the empty location selection in the transition page<br />
+• location message pop up when the location is not properly configured<br />
+• when updating the attributes of a durable log the operator that is logged instead of the operator from the previous status<br /> 
+• Fix: extend &lt;&gt; to work for strings besides numbers<br />
+• Fix bug to prevent adding duplicate children to a parent<br />
+• Fix for monitor page display rate calculation<br />
+• Fix for change on Parent-children relationship when changing Parent name<br />
+• When renaming the tester, the associate probe_Card "operator ID" is missing.<br />
+• check if the machine has a Performance object before updating the performance metrics<br />
+• Display correctly comments with double quotes (") and/or single quotes (')<br />
+• ranges and combo boxes in inventory were not working when there is only one filter selected<br /> 
+• Disable the unknown state for Reporting TTT <br />
+• when working with a durable you can display the details of the attached children to the durable and if you want to perform a transition it will do according to the wrong equipment type<br />
+• Fix CSV scheduled reports naming.<br />
+• Enable performance metrics (LOT_PROGRESS) from the client (SC2)<br />
+• Add defaults for reports so when a new equipment type is defined its durables can be displayed<br />
+• make an error in one monitor do not stop the execution of other monitors.<br />
+• do not copy all the comments from previous transitions<br />
+• Fix comments in conditions<br /> 
+• Sort the machine list by their name<br />
+• enable SINGLE_IN comments <br />
+</p>
+<h3>3.1</h3>
+Build 622
+<h3>3.0</h3>
+Build 247
+<p>
+Store TTT data in a database instead of text files.
+</p>
+</body>
+</html>
